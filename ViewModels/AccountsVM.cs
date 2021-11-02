@@ -1,14 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SecurePass.Models;
-using SecurePass.SQLite;
-using SecurePass.Utilities;
-using SecurePass.Views;
+﻿using SecurePass.Models;
 using System.Linq;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using SecurePass.Businesslogic;
+using Microsoft.Toolkit.Mvvm.Input;
+using System.Windows.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using SecurePass.Services;
 
 namespace SecurePass.ViewModels
 {
@@ -59,69 +57,50 @@ namespace SecurePass.ViewModels
         }
 
         #region Commands
-        private Command _addAccount;
-        public Command AddAccount
+        private ICommand _addAccount;
+        public ICommand AddAccount
         {
             get
             {
-                return _addAccount ??= new Command(obj =>
+                // redo, this doesn't match mvvm
+                return _addAccount ??= new RelayCommand(() =>
                     {
-                        NewAccountDialog newAccountDialog = new NewAccountDialog();
-                        bool? result = newAccountDialog.ShowDialog();
-                        if (result == true)
-                        {
-                            AccountModelBL.AddAccount(newAccountDialog.NewAccount);
-                            Accounts.Add(newAccountDialog.NewAccount);
-                            UpdateView();
-                        }
+                        Account newAccount = WeakReferenceMessenger.Default.Send<NewAccountWindowMessage>();
+                        AccountModelBL.AddAccount(newAccount);
+                        Accounts.Add(newAccount);
+                        UpdateView();
                     });
             }
         }
-        private Command _editAccount;
-        public Command EditAccount
+        private ICommand _editAccount;
+        public ICommand EditAccount
         {
             get
             {
-                return _editAccount ??= new Command(obj =>
+                // redo, this doesn't match mvvm
+                return _editAccount ??= new RelayCommand<int>(obj =>
                 {
-                    int id = (int)obj;
+                    int id = obj;
                     Account account = Accounts.Find(a => a.AccountId == id);
-                    EditAccountDialog editAccountDialog = new EditAccountDialog(account);
-                    bool? result = editAccountDialog.ShowDialog();
-                    if (result == true)
-                    {
-                        account = editAccountDialog.EditAccount;
-                        AccountModelBL.SetAccount(account);
-                        UpdateView();
-                    }
-                });
-            }
-        }
-        private Command _deleteAccount;
-        public Command DeleteAccount
-        {
-            get
-            {
-                return _deleteAccount ??= new Command(obj =>
-                {
-                    int id = (int)obj;
-                    Account account = Accounts.Find(a => a.AccountId == id);
-                    Accounts.Remove(account);
-                    AccountModelBL.RemoveAccount(account);
+                    EditAccountWindowMessage editWindow = new EditAccountWindowMessage(account);
+                    account = WeakReferenceMessenger.Default.Send(editWindow);
+                    AccountModelBL.SetAccount(account);
                     UpdateView();
                 });
             }
         }
-        private Command _save;
-        public Command Save
+        private ICommand _deleteAccount;
+        public ICommand DeleteAccount
         {
             get
             {
-                return _save ??= new Command(obj =>
+                return _deleteAccount ??= new RelayCommand<int>(obj =>
                 {
-
-                    Console.WriteLine("Save!");
-                    AccountModelBL.SaveChanges();
+                    int id = obj;
+                    Account account = Accounts.Find(a => a.AccountId == id);
+                    Accounts.Remove(account);
+                    AccountModelBL.RemoveAccount(account);
+                    UpdateView();
                 });
             }
         }

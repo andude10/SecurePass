@@ -1,9 +1,5 @@
-﻿using SecurePass.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Toolkit.Mvvm.Input;
+using System.Windows.Input;
 
 namespace SecurePass.ViewModels
 {
@@ -23,12 +19,12 @@ namespace SecurePass.ViewModels
         public AccountsVM AccountsVM { get; }
 
         #region Commands
-        private Command _openPasswordsPage;
-        public Command OpenPasswordsPage
+        private ICommand _openPasswordsPage;
+        public ICommand OpenPasswordsPage
         {
             get
             {
-                return _openPasswordsPage ??= new Command(obj =>
+                return _openPasswordsPage ??= new RelayCommand(()=>
                 {
                     CurrentContent = AccountsVM;
                 });
