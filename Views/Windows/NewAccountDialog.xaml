@@ -5,13 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SecurePass.Views"
         mc:Ignorable="d"
-        Title="AddAccount" Height="400" Width="550" WindowStartupLocation="CenterOwner"
-        Background="{DynamicResource MaterialDesignPaper}"
+        
+        Title="AddAccount" 
+        Height="400" Width="550" WindowStartupLocation="CenterOwner"
+        Background="#211f30"
+        WindowStyle="None" KeyDown="Window_KeyDown"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}">
 
     <Grid>
+        <Button Click="CloseWindow"
+                Content="×" FontSize="25"
+                Background="Transparent" BorderThickness="0"
+                VerticalAlignment="Top" HorizontalAlignment="Right" Height="45" Width="51" Cursor="Hand"/>
+        
         <Label Content="New account" FontSize="30" 
-               Height="50"
+               Height="50" Margin="10"
                FontFamily="Montserrat Bold" 
                VerticalAlignment="Top" HorizontalAlignment="Center"/>
 

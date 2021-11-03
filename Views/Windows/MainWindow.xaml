@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:SecurePass"
         mc:Ignorable="d"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
-        Background="{DynamicResource MaterialDesignPaper}"
+        Background="#211f30"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         
         Title="MainWindow" 

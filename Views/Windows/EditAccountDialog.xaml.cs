@@ -28,6 +28,11 @@ namespace SecurePass.Views
             EditAccount = editAccount;
             DataContext = EditAccount;
         }
+        private void CloseWindow(object sender, System.Windows.RoutedEventArgs e)
+        {
+            DialogResult = false;
+            this.Close();
+        }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)

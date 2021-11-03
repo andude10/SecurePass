@@ -65,7 +65,14 @@ namespace SecurePass.ViewModels
                 // redo, this doesn't match mvvm
                 return _addAccount ??= new RelayCommand(() =>
                     {
-                        Account newAccount = WeakReferenceMessenger.Default.Send<NewAccountWindowMessage>();
+                        Account newAccount;
+                        try
+                        {
+                            newAccount = WeakReferenceMessenger.Default.Send<NewAccountWindowMessage>();
+                        }
+                        catch (System.InvalidOperationException)
+                        { return; }
+
                         AccountModelBL.AddAccount(newAccount);
                         Accounts.Add(newAccount);
                         UpdateView();
@@ -82,8 +89,13 @@ namespace SecurePass.ViewModels
                 {
                     int id = obj;
                     Account account = Accounts.Find(a => a.AccountId == id);
-                    EditAccountWindowMessage editWindow = new EditAccountWindowMessage(account);
-                    account = WeakReferenceMessenger.Default.Send(editWindow);
+                    try
+                    {
+                        EditAccountWindowMessage editWindow = new EditAccountWindowMessage(account);
+                        account = WeakReferenceMessenger.Default.Send(editWindow);
+                    }
+                    catch (System.InvalidOperationException)
+                    { return; }
                     AccountModelBL.SetAccount(account);
                     UpdateView();
                 });

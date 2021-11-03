@@ -4,13 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SecurePass.Views"
-        Background="{DynamicResource MaterialDesignPaper}"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d"
-        Title="EditAccountDialog" Height="400" Width="550" WindowStartupLocation="CenterOwner">
+        
+        Background="#211f30"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Title="EditAccountDialog" Height="400" Width="550" 
+        WindowStartupLocation="CenterOwner" 
+        WindowStyle="None" KeyDown="Window_KeyDown">
     <Grid>
+        <Button Click="CloseWindow"
+                Content="×" FontSize="25"
+                Background="Transparent" BorderThickness="0"
+                VerticalAlignment="Top" HorizontalAlignment="Right" Height="45" Width="51" Cursor="Hand"/>
+
         <Label Content="Edit account" FontSize="30" 
-               Height="50"
+               Height="50" Margin="10"
                FontFamily="Montserrat Bold" 
                VerticalAlignment="Top" HorizontalAlignment="Center"/>
 
@@ -31,7 +39,7 @@
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="0,0,15,0">
                 <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"    
-                     VerticalAlignment="Top" FontSize="20" Cursor="IBeam" />
+                     VerticalAlignment="Top" FontSize="20" />
                 <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"    
                      VerticalAlignment="Top" FontSize="20" />
                 <TextBox Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"      
