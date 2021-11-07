@@ -13,11 +13,9 @@ namespace SecurePass
     /// </summary>
     public partial class MainWindow : Window
     {
-        private AccountsVM AccountsVM = new AccountsVM();
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = AccountsVM;
         }
 
         protected override void OnClosing(CancelEventArgs e)

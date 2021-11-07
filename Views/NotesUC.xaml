@@ -5,9 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SecurePass.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="450" d:DesignWidth="800"
+      Background="#2B2F47">
 
     <Grid>
-        
+        <StackPanel Margin="15,15,15,60">
+            <Label Content="Change history:" FontSize="23" FontFamily="{StaticResource Montserrat-ExtraBold}"
+                   Margin="20,0,0,5"
+                   VerticalAlignment="Top"/>
+        </StackPanel>
+
     </Grid>
 </UserControl>

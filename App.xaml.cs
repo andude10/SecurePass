@@ -1,4 +1,6 @@
-﻿using SecurePass.ViewModels;
+﻿using SecurePass.Businesslogic;
+using SecurePass.ViewModels;
+using SecurePass.Views;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,14 +16,16 @@ namespace SecurePass
     /// </summary>
     public partial class App : Application
     {
-        private MainWindow Window { get; set; }
-        public MainVM MainVM { get; set; }
+        private LoginWindow LoginWindow { get; set; }
+        private LoginVM LoginVM { get; set; }
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            MainVM = new MainVM();
-            Window = new MainWindow { DataContext = MainVM };
-            Window.Show();
+            SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlcipher());
+
+            LoginVM = new LoginVM();
+            LoginWindow = new LoginWindow() { DataContext = LoginVM };
+            LoginWindow.Show();
         }
     }
 }

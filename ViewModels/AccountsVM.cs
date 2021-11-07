@@ -62,7 +62,6 @@ namespace SecurePass.ViewModels
         {
             get
             {
-                // redo, this doesn't match mvvm
                 return _addAccount ??= new RelayCommand(() =>
                     {
                         Account newAccount;
@@ -84,7 +83,6 @@ namespace SecurePass.ViewModels
         {
             get
             {
-                // redo, this doesn't match mvvm
                 return _editAccount ??= new RelayCommand<int>(obj =>
                 {
                     int id = obj;

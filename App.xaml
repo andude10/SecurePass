@@ -9,6 +9,10 @@
                 <materialDesign:CustomColorTheme BaseTheme="Dark" PrimaryColor="#217ca3" SecondaryColor="#e29930" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="Montserrat-Bold">./Views/Fonts/Montserrat-Bold.ttf#Montserrat</FontFamily>
+            <FontFamily x:Key="Montserrat-ExtraBold">./Views/Fonts/Montserrat-ExtraBold.ttf#Montserrat</FontFamily>
+            <FontFamily x:Key="Montserrat-Light">./Views/Fonts/Montserrat-Light.ttf#Montserrat</FontFamily>
+            <FontFamily x:Key="Montserrat-Regular">./Views/Fonts/Montserrat-Regular.ttf#Montserrat</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
