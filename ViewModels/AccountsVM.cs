@@ -87,6 +87,7 @@ namespace SecurePass.ViewModels
                 {
                     int id = obj;
                     Account account = Accounts.Find(a => a.AccountId == id);
+                    string oldpass = account.Password;
                     try
                     {
                         EditAccountWindowMessage editWindow = new EditAccountWindowMessage(account);
@@ -94,7 +95,7 @@ namespace SecurePass.ViewModels
                     }
                     catch (System.InvalidOperationException)
                     { return; }
-                    AccountModelBL.SetAccount(account);
+                    AccountModelBL.SetAccount(account, oldpass);
                     UpdateView();
                 });
             }

@@ -45,6 +45,7 @@
                     VerticalAlignment="Center" 
                     Margin="7"/>
             <Button Content="History" 
+                    Command="{Binding OpenHistoryPage}"
                     HorizontalContentAlignment="Left"
                     Background="Transparent" BorderBrush="Transparent"
                     FontSize="18" 
@@ -63,8 +64,11 @@
                 <DataTemplate DataType="{x:Type vm:AccountsVM}">
                     <view:PasswordsUC/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:HistoryVM}">
+                    <view:HistoryUC/>
+                </DataTemplate>
             </Grid.Resources>
-            <ContentPresenter Content="{Binding CurrentContent}"></ContentPresenter>
+            <ContentPresenter Content="{Binding CurrentContent, UpdateSourceTrigger=PropertyChanged}"></ContentPresenter>
         </Grid>
     </Grid>
 </Window>

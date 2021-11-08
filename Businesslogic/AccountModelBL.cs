@@ -38,10 +38,15 @@ namespace SecurePass.Businesslogic
             using AccountsContext context = new AccountsContext();
             return context.Accounts.Find(id);
         }
-        public static void SetAccount(Account value)
+        public static void SetAccount(Account newaccount, string oldpass)
         {
             using AccountsContext context = new AccountsContext();
-            context.Accounts.Update(value);
+            if(oldpass != newaccount.Password)
+            {
+                AddAccountChanges(newaccount.Username, newaccount.Url, oldpass, newaccount.Password);
+            }
+            
+            context.Accounts.Update(newaccount);
             context.SaveChanges();
         }
         public static void RemoveAccount(Account account)
@@ -50,11 +55,29 @@ namespace SecurePass.Businesslogic
             context.Accounts.Remove(account);
             context.SaveChanges();
         }
-
         public static void AddAccount(Account account)
         {
             using AccountsContext context = new AccountsContext();
             context.Accounts.Add(account);
+            context.SaveChanges();
+        }
+
+
+        public static IEnumerable<AccountChange> GetAccountsChanges()
+        {
+            using AccountsContext context = new AccountsContext();
+            return context.AccountsChanges.ToList();
+        }
+        public static AccountChange GetAccountChanges(int id)
+        {
+            using AccountsContext context = new AccountsContext();
+            return context.AccountsChanges.Find(id);
+        }
+        public static void AddAccountChanges(string username, string url, string oldpass, string newpass)
+        {
+            using AccountsContext context = new AccountsContext();
+            string message = $"Account password with username '{username}' on '{url}' website changed from '{oldpass}' to '{newpass}'";
+            context.AccountsChanges.Add(new AccountChange() { Change = message, Date = DateTime.Now.ToString()});
             context.SaveChanges();
         }
     }

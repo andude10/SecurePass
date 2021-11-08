@@ -5,9 +5,31 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SecurePass.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="450" d:DesignWidth="800"
+      Background="#2B2F47">
 
     <Grid>
-        
+        <Label Content="Password change history" FontSize="23" FontFamily="{StaticResource Montserrat-ExtraBold}"
+                       Margin="35,15,15,5"
+                       VerticalAlignment="Top"/>
+        <Border Background="#217ca3" BorderThickness="1" CornerRadius="8"
+                     Margin="35,70,35,35">
+            <ListBox ItemsSource="{Binding AccountChanges, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedItem="{Binding SelectedAccountChange, UpdateSourceTrigger=PropertyChanged}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" 
+                                        HorizontalAlignment="Left">
+                            <Label Content="{Binding Date}" 
+                                       FontSize="15" FontFamily="{StaticResource Montserrat-Bold}"
+                                       Margin="10"/>
+                            <Label Content="{Binding Change}"
+                                       FontSize="14" FontFamily="{StaticResource Montserrat-Regular}"
+                                       Margin="10"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
     </Grid>
 </UserControl>

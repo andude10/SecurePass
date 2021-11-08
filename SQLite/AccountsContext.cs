@@ -15,6 +15,7 @@ namespace SecurePass.SQLite
         public static bool SuccessfulRegistration;
         public static string Name;
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<AccountChange> AccountsChanges { get; set; }
         public AccountsContext()
         { }
         public AccountsContext(SecureString password, string name = "dfuser")
@@ -32,7 +33,7 @@ namespace SecurePass.SQLite
             {
                 using (StreamWriter sw = File.CreateText($"{Name}mcode"))
                 {
-                    sw.Write(password);
+                    sw.Write(new NetworkCredential("", Password).Password);
                 }
                 File.Encrypt($"{Name}mcode");
                 SuccessfulRegistration = true;
