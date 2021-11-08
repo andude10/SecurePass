@@ -19,6 +19,7 @@ namespace SecurePass.Views
         {
             InitializeComponent();
             DataContext = this;
+            Owner = App.Current.MainWindow;
         }
         private bool _addUpperCase;
         public bool AddUpperCase

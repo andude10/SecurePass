@@ -22,7 +22,6 @@ namespace SecurePass.Views
         private static void NewAccount(PasswordsUC recipient, NewAccountWindowMessage message)
         {
             NewAccountDialog newAccountDialog = new NewAccountDialog();
-            newAccountDialog.Owner = App.Current.MainWindow;
             if (newAccountDialog.ShowDialog() == true)
             {
                 message.Reply(newAccountDialog.NewAccount);
@@ -31,7 +30,6 @@ namespace SecurePass.Views
         private static void EditAccount(PasswordsUC recipient, EditAccountWindowMessage message)
         {
             EditAccountDialog editAccountDialog = new EditAccountDialog(message.Account);
-            editAccountDialog.Owner = App.Current.MainWindow;
             if (editAccountDialog.ShowDialog() == true)
             {
                 message.Reply(editAccountDialog.EditAccount);
@@ -41,7 +39,6 @@ namespace SecurePass.Views
         private void GeneratePassword_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             GeneratePasswordWindow generatePassword = new GeneratePasswordWindow();
-            generatePassword.Owner = App.Current.MainWindow;
             generatePassword.ShowDialog();
         }
     }

@@ -17,16 +17,12 @@ namespace SecurePass.Views
             get { return _editAccount; }
             set { RaisePropertyChanged(ref _editAccount, value); }
         }
-        public EditAccountDialog()
-        {
-            InitializeComponent();
-            DataContext = EditAccount;
-        }
         public EditAccountDialog(Account editAccount)
         {
             InitializeComponent();
             EditAccount = editAccount;
             DataContext = EditAccount;
+            Owner = App.Current.MainWindow;
         }
         private void CloseWindow(object sender, System.Windows.RoutedEventArgs e)
         {

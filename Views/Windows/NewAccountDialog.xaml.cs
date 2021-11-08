@@ -25,6 +25,7 @@ namespace SecurePass.Views
         {
             InitializeComponent();
             DataContext = NewAccount;
+            Owner = App.Current.MainWindow;
         }
         private void CloseWindow(object sender, System.Windows.RoutedEventArgs e) => this.Close();
         private void Window_KeyDown(object sender, KeyEventArgs e)
