@@ -22,5 +22,15 @@ namespace SecurePass
         {
             base.OnClosing(e);
         }
+
+        private void CloseWindow(object sender, System.Windows.RoutedEventArgs e) => this.Close();
+        private void MinimizedWindow(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+        private void MaximizedWindow(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Maximized;
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.Messaging;
+using SecurePass.Services;
+using SecurePass.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +26,26 @@ namespace SecurePass.Views
         public NotesUC()
         {
             InitializeComponent();
+            WeakReferenceMessenger.Default.Register<NotesUC, NewNoteWindowMessage>(this, NewNote);
+            WeakReferenceMessenger.Default.Register<NotesUC, EditNoteWindowMessage>(this, EditNote);
+            DataContext = new NotesVM();
+        }
+
+        private static void NewNote(NotesUC recipient, NewNoteWindowMessage message)
+        {
+            NewNoteWindow newNoteWindow = new NewNoteWindow();
+            if (newNoteWindow.ShowDialog() == true)
+            {
+                message.Reply(newNoteWindow.NewNote);
+            }
+        }
+        private static void EditNote(NotesUC recipient, EditNoteWindowMessage message)
+        {
+            EditNoteWindow editNoteWindow = new EditNoteWindow(message.Note);
+            if (editNoteWindow.ShowDialog() == true)
+            {
+                message.Reply(editNoteWindow.EditNote);
+            }
         }
     }
 }

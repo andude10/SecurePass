@@ -1,6 +1,7 @@
 ﻿using SecurePass.Models;
 using System.Collections.ObjectModel;
 using SecurePass.Businesslogic;
+using System.Linq;
 
 namespace SecurePass.ViewModels
 {
@@ -9,6 +10,8 @@ namespace SecurePass.ViewModels
         public HistoryVM()
         {
             AccountChanges = new ObservableCollection<AccountChange>(AccountModelBL.GetAccountsChanges());
+            // reverse so that new changes are at the top
+            AccountChanges.Reverse();
         }
         private ObservableCollection<AccountChange> _accountChanges;
         public ObservableCollection<AccountChange> AccountChanges

@@ -10,12 +10,16 @@
 
     <Grid>
         <Label Content="Password change history" FontSize="23" FontFamily="{StaticResource Montserrat-ExtraBold}"
-                       Margin="35,15,15,5"
-                       VerticalAlignment="Top"/>
-        <Border Background="#217ca3" BorderThickness="1" CornerRadius="8"
-                     Margin="35,70,35,35">
+               Margin="35,15,15,20"
+               VerticalAlignment="Top"/>
+        
+        <Border Background="#1C698A" BorderThickness="1" CornerRadius="8"
+                Margin="35,70,35,35">
             <ListBox ItemsSource="{Binding AccountChanges, UpdateSourceTrigger=PropertyChanged}"
-                     SelectedItem="{Binding SelectedAccountChange, UpdateSourceTrigger=PropertyChanged}">
+                     SelectedItem="{Binding SelectedAccountChange, UpdateSourceTrigger=PropertyChanged}"
+                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                     ScrollViewer.CanContentScroll="False"
+                     Height="550">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" 

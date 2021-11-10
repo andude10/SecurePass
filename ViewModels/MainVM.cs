@@ -8,7 +8,7 @@ namespace SecurePass.ViewModels
         public MainVM()
         {
             AccountsVM = new AccountsVM();
-            HistoryVM = new HistoryVM();
+            NotesVM = new NotesVM();
         }
         private BaseViewModel _currentContent;
         public BaseViewModel CurrentContent
@@ -19,6 +19,7 @@ namespace SecurePass.ViewModels
 
         public AccountsVM AccountsVM { get; }
         public HistoryVM HistoryVM { get; set; }
+        public NotesVM NotesVM { get; set; }
         #region Commands
         private ICommand _openPasswordsPage;
         public ICommand OpenPasswordsPage
@@ -38,8 +39,20 @@ namespace SecurePass.ViewModels
             {
                 return _openHistoryPage ??= new RelayCommand(() =>
                 {
+                    //a new instance of HistroyVM is created each time to update the changes
                     HistoryVM = new HistoryVM();
                     CurrentContent = HistoryVM;
+                });
+            }
+        }
+        private ICommand _openNotesPage;
+        public ICommand OpenNotesPage
+        {
+            get
+            {
+                return _openNotesPage ??= new RelayCommand(() =>
+                {
+                    CurrentContent = NotesVM;
                 });
             }
         }

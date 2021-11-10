@@ -9,11 +9,78 @@
       Background="#2B2F47">
 
     <Grid>
-        <StackPanel Margin="15,15,15,60">
-            <Label Content="Change history:" FontSize="23" FontFamily="{StaticResource Montserrat-ExtraBold}"
-                   Margin="20,0,0,5"
-                   VerticalAlignment="Top"/>
-        </StackPanel>
+        <StackPanel Margin="15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="800"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Content="Your secure notes:" FontSize="25" FontFamily="{StaticResource Montserrat-ExtraBold}"
+                       Margin="20,0,0,5"/>
+                <Button Content="Add note"
+                        Grid.Column="1"
+                        Command="{Binding AddNote}"
+                        Margin="0,0,20,5"/>
+            </Grid>
+            
+            
+            <ListBox ItemsSource="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedItem="{Binding SelectedNote, UpdateSourceTrigger=PropertyChanged}"
+                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.CanContentScroll="False"
+                     Height="550" Margin="10,0,0,0">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="#1C61BA" BorderThickness="5" CornerRadius="8"
+                                Width="292">
+                            <Grid Margin="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition MinHeight="50"></RowDefinition>
+                                    <RowDefinition MinHeight="100"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <StackPanel Margin="5" Grid.Row="0">
+                                    <Label Content="{Binding Title, UpdateSourceTrigger=PropertyChanged}" 
+                                               FontSize="22" FontFamily="{StaticResource Montserrat-ExtraBold}"/>
+                                    <Label Content="{Binding Date, UpdateSourceTrigger=PropertyChanged}"
+                                               FontSize="15" FontFamily="{StaticResource Montserrat-Light}"
+                                               Foreground="LightGray"/>
+                                </StackPanel>
+                                <Border Background="#1C61BA" CornerRadius="8"
+                                        Grid.Row="1">
+                                    <TextBlock Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+                                               FontSize="14" FontFamily="Montserrat"
+                                               Margin="10"
+                                               TextWrapping="WrapWithOverflow"/>
+                                </Border>
+                                <StackPanel Margin="5"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                            Grid.Row="1">
+                                    <Button Content="Edit" FontSize="16"
+                                                Height="35" Width="80"
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
+                                                          Path=DataContext.EditNote}" 
+                                                CommandParameter="{Binding NoteId}"
+                                                HorizontalAlignment="Right" Margin="3"/>
 
+                                    <Button Content="Delete" FontSize="16"
+                                                Height="35" Width="90"
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
+                                                          Path=DataContext.DeleteNote}" 
+                                                CommandParameter="{Binding NoteId}"
+                                                HorizontalAlignment="Right" Margin="3"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
     </Grid>
 </UserControl>

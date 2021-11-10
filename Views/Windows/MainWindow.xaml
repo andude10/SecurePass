@@ -7,68 +7,95 @@
         xmlns:view="clr-namespace:SecurePass.Views"
         xmlns:local="clr-namespace:SecurePass"
         mc:Ignorable="d"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
         Background="#211f30"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        
         Title="MainWindow" 
         Height="750" Width="1200">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"></ColumnDefinition>
-            <ColumnDefinition ></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+        <Rectangle x:Name="rectSizeNorthWest"
+                   Grid.Column="0"
+                   MouseDown="OnSizeNorthWest"
+                   Cursor="SizeNWSE" Fill="Transparent"
+                   VerticalAlignment="Top" HorizontalAlignment="Left"
+                   Width="100" Height="5" />
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="75"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" 
+                    Orientation="Horizontal">
+            <Button Click="MinimizedWindow"
+                Content="–" FontSize="25"
+                Background="Transparent" BorderThickness="0" 
+                Height="45" Width="51" Cursor="Hand"/>
+            <Button Click="CloseWindow"
+                Content="×" FontSize="25"
+                Background="Transparent" BorderThickness="0" 
+                Height="45" Width="51" Cursor="Hand"/>
+        </StackPanel>
         
-        <TextBlock Text="SecurePass" 
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"></ColumnDefinition>
+                <ColumnDefinition ></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="SecurePass" 
                    VerticalAlignment="Center" HorizontalAlignment="Center"
                    FontSize="27" FontFamily="Montserrat"
                    TextAlignment="Left" Margin="15"/>
 
-        <StackPanel Grid.Row="1">
-            <Button Content="Passwords"
+            <StackPanel Grid.Row="1">
+                <Button Content="Passwords"
                     Command="{Binding OpenPasswordsPage}"
                     HorizontalContentAlignment="Left"
                     Background="Transparent" BorderBrush="Transparent"
                     FontSize="18" 
                     VerticalAlignment="Center" 
                     Margin="7" Cursor="Hand"/>
-            <Button Content="Files"
+                <Button Content="Files"
                     HorizontalContentAlignment="Left"
                     Background="Transparent" BorderBrush="Transparent"
                     FontSize="18" 
                     VerticalAlignment="Center" 
                     Margin="7"/>
-            <Button Content="History" 
+                <Button Content="History" 
                     Command="{Binding OpenHistoryPage}"
                     HorizontalContentAlignment="Left"
                     Background="Transparent" BorderBrush="Transparent"
                     FontSize="18" 
                     VerticalAlignment="Center" 
                     Margin="7"/>
-            <Button Content="Notes" 
+                <Button Command="{Binding OpenNotesPage}"
+                    Content="Notes" 
                     HorizontalContentAlignment="Left"
                     Background="Transparent" BorderBrush="Transparent"
                     FontSize="18" 
                     VerticalAlignment="Center" 
-                    Margin="7"/>
-        </StackPanel>
-        
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.Resources>
-                <DataTemplate DataType="{x:Type vm:AccountsVM}">
-                    <view:PasswordsUC/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:HistoryVM}">
-                    <view:HistoryUC/>
-                </DataTemplate>
-            </Grid.Resources>
-            <ContentPresenter Content="{Binding CurrentContent, UpdateSourceTrigger=PropertyChanged}"></ContentPresenter>
+                    Margin="7" Cursor="Hand"/>
+            </StackPanel>
+
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.Resources>
+                    <DataTemplate DataType="{x:Type vm:AccountsVM}">
+                        <view:PasswordsUC/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:HistoryVM}">
+                        <view:HistoryUC/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:NotesVM}">
+                        <view:NotesUC/>
+                    </DataTemplate>
+                </Grid.Resources>
+                <ContentPresenter Content="{Binding CurrentContent, UpdateSourceTrigger=PropertyChanged}"></ContentPresenter>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:CustomColorTheme BaseTheme="Dark" PrimaryColor="#217ca3" SecondaryColor="#e29930" />
+                <materialDesign:CustomColorTheme BaseTheme="Dark" PrimaryColor="#217ca3" SecondaryColor="#1C61BA" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <FontFamily x:Key="Montserrat-Bold">./Views/Fonts/Montserrat-Bold.ttf#Montserrat</FontFamily>

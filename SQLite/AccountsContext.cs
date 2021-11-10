@@ -14,8 +14,11 @@ namespace SecurePass.SQLite
         private static SecureString Password;
         public static bool SuccessfulRegistration;
         public static string Name;
+
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountChange> AccountsChanges { get; set; }
+        public DbSet<Note> Notes { get; set; }
+
         public AccountsContext()
         { }
         public AccountsContext(SecureString password, string name = "dfuser")
@@ -24,18 +27,19 @@ namespace SecurePass.SQLite
             Name = name;
             if (File.Exists($"{Name}mcode"))
             {
-                File.Decrypt($"{Name}mcode");
-                SecureString mcode = new NetworkCredential("", File.ReadAllText($"{Name}mcode")).SecurePassword;
-                File.Encrypt($"{Name}mcode");
+                EncryptionPassword encryption = new EncryptionPassword();
+                SecureString mcode = new NetworkCredential("", 
+                    encryption.Decrypt(File.ReadAllText($"{Name}mcode"))).SecurePassword;
                 SuccessfulRegistration = PasswordEqual(password, mcode);
             }
             else
             {
+                
+                EncryptionPassword encryption = new EncryptionPassword();
                 using (StreamWriter sw = File.CreateText($"{Name}mcode"))
                 {
-                    sw.Write(new NetworkCredential("", Password).Password);
+                    sw.Write(encryption.Encrypt(new NetworkCredential("", Password).Password));
                 }
-                File.Encrypt($"{Name}mcode");
                 SuccessfulRegistration = true;
             }
         }

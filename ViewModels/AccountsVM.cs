@@ -71,7 +71,8 @@ namespace SecurePass.ViewModels
                         }
                         catch (System.InvalidOperationException)
                         { return; }
-
+                        if (newAccount.Category == null)
+                            newAccount.Category = "No category";
                         AccountModelBL.AddAccount(newAccount);
                         Accounts.Add(newAccount);
                         UpdateView();
@@ -95,6 +96,8 @@ namespace SecurePass.ViewModels
                     }
                     catch (System.InvalidOperationException)
                     { return; }
+                    if (account.Category == null)
+                        account.Category = "No category";
                     AccountModelBL.SetAccount(account, oldpass);
                     UpdateView();
                 });

@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         
         Title="LoginWindow" Height="300" Width="600"
+        WindowStartupLocation="CenterScreen"
         Background="#2B2F47"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}">
     <Grid>

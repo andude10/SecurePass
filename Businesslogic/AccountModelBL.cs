@@ -28,6 +28,7 @@ namespace SecurePass.Businesslogic
             using AccountsContext context = new AccountsContext();
             context.SaveChanges();
         }
+        #region Account
         public static IEnumerable<Account> GetAccounts()
         {
             using AccountsContext context = new AccountsContext();
@@ -61,8 +62,9 @@ namespace SecurePass.Businesslogic
             context.Accounts.Add(account);
             context.SaveChanges();
         }
+        #endregion
 
-
+        #region AccountChange
         public static IEnumerable<AccountChange> GetAccountsChanges()
         {
             using AccountsContext context = new AccountsContext();
@@ -80,5 +82,37 @@ namespace SecurePass.Businesslogic
             context.AccountsChanges.Add(new AccountChange() { Change = message, Date = DateTime.Now.ToString()});
             context.SaveChanges();
         }
+        #endregion
+
+        #region Note
+        public static IEnumerable<Note> GetNotes()
+        {
+            using AccountsContext context = new AccountsContext();
+            return context.Notes.ToList();
+        }
+        public static Note GetNote(int id)
+        {
+            using AccountsContext context = new AccountsContext();
+            return context.Notes.Find(id);
+        }
+        public static void SetNote(Note note)
+        {
+            using AccountsContext context = new AccountsContext();
+            context.Notes.Update(note);
+            context.SaveChanges();
+        }
+        public static void RemoveNote(Note note)
+        {
+            using AccountsContext context = new AccountsContext();
+            context.Notes.Remove(note);
+            context.SaveChanges();
+        }
+        public static void AddNote(Note note)
+        {
+            using AccountsContext context = new AccountsContext();
+            context.Notes.Add(note);
+            context.SaveChanges();
+        }
+        #endregion
     }
 }
