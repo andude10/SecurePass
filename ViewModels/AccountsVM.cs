@@ -16,7 +16,7 @@ namespace SecurePass.ViewModels
         {
             Accounts = AccountModelBL.GetAccounts().ToList();
             Categories = new ObservableCollection<string>();
-            SelectedAccounts = new ObservableCollection<Account>(Accounts);
+            ActualAccounts = new ObservableCollection<Account>(Accounts);
             UpdateView();
         }
 
@@ -26,11 +26,11 @@ namespace SecurePass.ViewModels
             get { return _accounts; }
             set { RaisePropertyChanged(ref _accounts, value); }
         }
-        private ObservableCollection<Account> _selectedAccounts;
-        public ObservableCollection<Account> SelectedAccounts
+        private ObservableCollection<Account> _actualAccounts;
+        public ObservableCollection<Account> ActualAccounts
         {
-            get { return _selectedAccounts; }
-            set { RaisePropertyChanged(ref _selectedAccounts, value); }
+            get { return _actualAccounts; }
+            set { RaisePropertyChanged(ref _actualAccounts, value); }
         }
         private ObservableCollection<string> _categories;
         public ObservableCollection<string> Categories
@@ -46,14 +46,8 @@ namespace SecurePass.ViewModels
             set 
             {
                 RaisePropertyChanged(ref _selectedCategory, value);
-                SelectedAccounts = new ObservableCollection<Account>(Accounts.Where(a => a.Category == SelectedCategory));
+                ActualAccounts = new ObservableCollection<Account>(Accounts.Where(a => a.Category == SelectedCategory));
             }
-        }
-        private Account _selectedOneAccount;
-        public Account SelectedOneAccount
-        {
-            get { return _selectedOneAccount; }
-            set { RaisePropertyChanged(ref _selectedOneAccount, value);}
         }
 
         #region Commands
@@ -119,11 +113,19 @@ namespace SecurePass.ViewModels
             }
         }
         #endregion
+        public override void SearchingData(string enteredText)
+        {
+            ActualAccounts = new ObservableCollection<Account>(Accounts.Where(a =>
+            {
+                var alltext = a.Url + a.Username ;
+                return alltext.ToLower().Contains(enteredText.ToLower());
+            }));
+        }
         private void UpdateView()
         {
             var categories = Accounts.Select(a => a.Category).ToList();
             Categories = new ObservableCollection<string>(categories.Distinct().ToList());
-            SelectedAccounts = new ObservableCollection<Account>(Accounts.Where(a => a.Category == SelectedCategory));
+            ActualAccounts = new ObservableCollection<Account>(Accounts.Where(a => a.Category == SelectedCategory));
         }
     }
 }

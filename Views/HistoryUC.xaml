@@ -15,22 +15,35 @@
         
         <Border Background="#1C698A" BorderThickness="1" CornerRadius="8"
                 Margin="35,70,35,35">
-            <ListBox ItemsSource="{Binding AccountChanges, UpdateSourceTrigger=PropertyChanged}"
-                     SelectedItem="{Binding SelectedAccountChange, UpdateSourceTrigger=PropertyChanged}"
+            <ListBox ItemsSource="{Binding ActualAccountChanges, UpdateSourceTrigger=PropertyChanged}"
                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
                      ScrollViewer.CanContentScroll="False"
                      Height="550">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" 
-                                        HorizontalAlignment="Left">
+                        <Grid Height="50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="170"></ColumnDefinition>
+                                <ColumnDefinition Width="570"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
                             <Label Content="{Binding Date}" 
-                                       FontSize="15" FontFamily="{StaticResource Montserrat-Bold}"
-                                       Margin="10"/>
-                            <Label Content="{Binding Change}"
+                                   FontSize="15" FontFamily="{StaticResource Montserrat-Bold}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Margin="10"/>
+                            <TextBlock x:Name="textBlock"
+                                       Text="{Binding Change}"
                                        FontSize="14" FontFamily="{StaticResource Montserrat-Regular}"
-                                       Margin="10"/>
-                        </StackPanel>
+                                       TextWrapping="Wrap"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Grid.Column="1"/>
+                            <Button Content="Copy"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
+                                                      Path=DataContext.CopyChangetext}" 
+                                    CommandParameter="{Binding AccountChangeId}"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                    Margin="10" Grid.Column="2"/>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

@@ -13,19 +13,19 @@ namespace SecurePass.Views
     public partial class LoginWindow : Window
     {
         private MainWindow Window { get; set; }
-        public MainVM MainVM { get; set; }
         public LoginWindow()
         {
             InitializeComponent();
             WeakReferenceMessenger.Default.Register<LoginWindow, LoginWindowMessage>(this, Login);
-            DataContext = new LoginVM();
+            ViewModelManager.LoginVM = new LoginVM();
+            DataContext = ViewModelManager.LoginVM;
         }
         private void Login(LoginWindow recipient, LoginWindowMessage message)
         {
             if(message.IsSuccessful)
             {
-                MainVM = new MainVM();
-                Window = new MainWindow { DataContext = MainVM };
+                ViewModelManager.MainVM = new MainVM();
+                Window = new MainWindow();
                 Window.Show();
                 this.Close();
             }

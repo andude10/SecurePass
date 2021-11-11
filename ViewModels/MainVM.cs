@@ -1,4 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
+using SecurePass.Services;
 using System.Windows.Input;
 
 namespace SecurePass.ViewModels
@@ -7,19 +8,25 @@ namespace SecurePass.ViewModels
     {
         public MainVM()
         {
-            AccountsVM = new AccountsVM();
-            NotesVM = new NotesVM();
+            ViewModelManager.AccountsVM = new AccountsVM();
+            ViewModelManager.HistoryVM = new HistoryVM();
+            ViewModelManager.NotesVM = new NotesVM();
+            OnSerching += ViewModelManager.AccountsVM.SearchingData;
+            OnSerching += ViewModelManager.HistoryVM.SearchingData;
+            OnSerching += ViewModelManager.NotesVM.SearchingData;
         }
+        public delegate void Serching(string enteredText);
+        public event Serching OnSerching;
+
         private BaseViewModel _currentContent;
         public BaseViewModel CurrentContent
         {
             get { return _currentContent; }
-            set { RaisePropertyChanged(ref _currentContent, value); }
+            set 
+            {
+                RaisePropertyChanged(ref _currentContent, value); 
+            }
         }
-
-        public AccountsVM AccountsVM { get; }
-        public HistoryVM HistoryVM { get; set; }
-        public NotesVM NotesVM { get; set; }
         #region Commands
         private ICommand _openPasswordsPage;
         public ICommand OpenPasswordsPage
@@ -28,7 +35,7 @@ namespace SecurePass.ViewModels
             {
                 return _openPasswordsPage ??= new RelayCommand(()=>
                 {
-                    CurrentContent = AccountsVM;
+                    CurrentContent = ViewModelManager.AccountsVM;
                 });
             }
         }
@@ -40,8 +47,8 @@ namespace SecurePass.ViewModels
                 return _openHistoryPage ??= new RelayCommand(() =>
                 {
                     //a new instance of HistroyVM is created each time to update the changes
-                    HistoryVM = new HistoryVM();
-                    CurrentContent = HistoryVM;
+                    ViewModelManager.HistoryVM = new HistoryVM();
+                    CurrentContent = ViewModelManager.HistoryVM;
                 });
             }
         }
@@ -52,7 +59,18 @@ namespace SecurePass.ViewModels
             {
                 return _openNotesPage ??= new RelayCommand(() =>
                 {
-                    CurrentContent = NotesVM;
+                    CurrentContent = ViewModelManager.NotesVM;
+                });
+            }
+        }
+        private ICommand _searching;
+        public ICommand Searching
+        {
+            get
+            {
+                return _searching ??= new RelayCommand<string>(obj =>
+                {
+                    OnSerching(obj);
                 });
             }
         }

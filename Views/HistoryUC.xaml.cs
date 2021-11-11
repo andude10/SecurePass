@@ -1,4 +1,5 @@
-﻿using SecurePass.ViewModels;
+﻿using SecurePass.Services;
+using SecurePass.ViewModels;
 using System.Windows.Controls;
 
 namespace SecurePass.Views
@@ -11,7 +12,7 @@ namespace SecurePass.Views
         public HistoryUC()
         {
             InitializeComponent();
-            DataContext = new HistoryVM();
+            DataContext = ViewModelManager.HistoryVM;
         }
     }
 }

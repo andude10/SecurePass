@@ -25,5 +25,11 @@ namespace SecurePass.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             callbackMethod?.Invoke(newValue);
         }
+
+        // the method is not abstract, because there may be data that does not implement data retrieval
+        public virtual void SearchingData(string enteredText)
+        {
+
+        }
     }
 }

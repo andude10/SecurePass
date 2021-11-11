@@ -26,11 +26,11 @@ namespace SecurePass.ViewModels
             get { return _notes; }
             set { RaisePropertyChanged(ref _notes, value); }
         }
-        private Note _selectedNote;
-        public Note SelectedNote
+        private ObservableCollection<Note> _actualNotes;
+        public ObservableCollection<Note> ActualNotes
         {
-            get { return _selectedNote; }
-            set { RaisePropertyChanged(ref _selectedNote, value); }
+            get { return _actualNotes; }
+            set { RaisePropertyChanged(ref _actualNotes, value); }
         }
 
         #region Commands
@@ -90,7 +90,14 @@ namespace SecurePass.ViewModels
             }
         }
         #endregion
-
+        public override void SearchingData(string enteredText)
+        {
+            ActualNotes = new ObservableCollection<Note>(Notes.Where(n =>
+            {
+                var alltext = n.Text + n.Title + n.Date;
+                return alltext.ToLower().Contains(enteredText.ToLower());
+            }));
+        }
         private void UpdateView()
         {
             Notes = AccountModelBL.GetNotes().ToList(); ;

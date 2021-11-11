@@ -16,7 +16,7 @@ namespace SecurePass.Views
 
             WeakReferenceMessenger.Default.Register<PasswordsUC, NewAccountWindowMessage>(this, NewAccount);
             WeakReferenceMessenger.Default.Register<PasswordsUC, EditAccountWindowMessage>(this, EditAccount);
-            DataContext = new AccountsVM();
+            DataContext = ViewModelManager.AccountsVM;
         }
 
         private static void NewAccount(PasswordsUC recipient, NewAccountWindowMessage message)

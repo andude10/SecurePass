@@ -13,7 +13,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="800"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="120"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Content="Your secure notes:" FontSize="25" FontFamily="{StaticResource Montserrat-ExtraBold}"
                        Margin="20,0,0,5"/>
@@ -22,10 +22,9 @@
                         Command="{Binding AddNote}"
                         Margin="0,0,20,5"/>
             </Grid>
-            
-            
-            <ListBox ItemsSource="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
-                     SelectedItem="{Binding SelectedNote, UpdateSourceTrigger=PropertyChanged}"
+
+
+            <ListBox ItemsSource="{Binding ActualNotes, UpdateSourceTrigger=PropertyChanged}"
                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ScrollViewer.CanContentScroll="False"

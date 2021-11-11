@@ -28,7 +28,7 @@ namespace SecurePass.Views
             InitializeComponent();
             WeakReferenceMessenger.Default.Register<NotesUC, NewNoteWindowMessage>(this, NewNote);
             WeakReferenceMessenger.Default.Register<NotesUC, EditNoteWindowMessage>(this, EditNote);
-            DataContext = new NotesVM();
+            DataContext = ViewModelManager.NotesVM;
         }
 
         private static void NewNote(NotesUC recipient, NewNoteWindowMessage message)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SecurePass.Services;
 using SecurePass.SQLite;
 using SecurePass.ViewModels;
 using System.ComponentModel;
@@ -16,6 +17,7 @@ namespace SecurePass
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = ViewModelManager.MainVM;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -31,6 +33,11 @@ namespace SecurePass
         private void MaximizedWindow(object sender, System.Windows.RoutedEventArgs e)
         {
             this.WindowState = WindowState.Maximized;
+
+        }
+        private void MoveWindow(object sender, System.Windows.RoutedEventArgs e)
+        {
+            DragMove();
         }
     }
 }

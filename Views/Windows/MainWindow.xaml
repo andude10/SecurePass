@@ -8,7 +8,9 @@
         xmlns:local="clr-namespace:SecurePass"
         mc:Ignorable="d"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         
+        x:Name="mainWindow"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         Background="#211f30"
@@ -17,12 +19,10 @@
         Height="750" Width="1200">
 
     <Grid>
-        <Rectangle x:Name="rectSizeNorthWest"
-                   Grid.Column="0"
-                   MouseDown="OnSizeNorthWest"
-                   Cursor="SizeNWSE" Fill="Transparent"
-                   VerticalAlignment="Top" HorizontalAlignment="Left"
-                   Width="100" Height="5" />
+        <Rectangle Grid.Column="0"
+                   MouseDown="MoveWindow"
+                   Fill="Transparent"
+                   VerticalAlignment="Top" Height="50" />
 
         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" 
                     Orientation="Horizontal">
@@ -48,9 +48,23 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="SecurePass" 
-                   VerticalAlignment="Center" HorizontalAlignment="Center"
-                   FontSize="27" FontFamily="Montserrat"
-                   TextAlignment="Left" Margin="15"/>
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontSize="27" FontFamily="{StaticResource Montserrat-ExtraBold}"
+                       TextAlignment="Left"/>
+
+            <TextBox x:Name="SearchTextBox"
+                     VerticalAlignment="Center" HorizontalAlignment="Left"
+                     materialdesign:HintAssist.Hint="Search.."
+                     FontSize="20" FontFamily="{StaticResource Montserrat-Regular}"
+                     VerticalContentAlignment="Bottom"
+                     Grid.Column="1" Width="200" Height="30" Margin="50,0,0,0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="KeyUp">
+                        <i:InvokeCommandAction Command="{Binding Searching}"
+                                               CommandParameter="{Binding Text, ElementName=SearchTextBox}"></i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
 
             <StackPanel Grid.Row="1">
                 <Button Content="Passwords"
@@ -60,19 +74,13 @@
                     FontSize="18" 
                     VerticalAlignment="Center" 
                     Margin="7" Cursor="Hand"/>
-                <Button Content="Files"
-                    HorizontalContentAlignment="Left"
-                    Background="Transparent" BorderBrush="Transparent"
-                    FontSize="18" 
-                    VerticalAlignment="Center" 
-                    Margin="7"/>
                 <Button Content="History" 
                     Command="{Binding OpenHistoryPage}"
                     HorizontalContentAlignment="Left"
                     Background="Transparent" BorderBrush="Transparent"
                     FontSize="18" 
                     VerticalAlignment="Center" 
-                    Margin="7"/>
+                    Margin="7" Cursor="Hand"/>
                 <Button Command="{Binding OpenNotesPage}"
                     Content="Notes" 
                     HorizontalContentAlignment="Left"
@@ -94,7 +102,7 @@
                         <view:NotesUC/>
                     </DataTemplate>
                 </Grid.Resources>
-                <ContentPresenter Content="{Binding CurrentContent, UpdateSourceTrigger=PropertyChanged}"></ContentPresenter>
+                <ContentPresenter Content="{Binding CurrentContent, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Grid>
     </Grid>
