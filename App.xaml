@@ -13,6 +13,15 @@
             <FontFamily x:Key="Montserrat-ExtraBold">./Views/Fonts/Montserrat-ExtraBold.ttf#Montserrat</FontFamily>
             <FontFamily x:Key="Montserrat-Light">./Views/Fonts/Montserrat-Light.ttf#Montserrat</FontFamily>
             <FontFamily x:Key="Montserrat-Regular">./Views/Fonts/Montserrat-Regular.ttf#Montserrat</FontFamily>
+
+            <Style TargetType="{x:Type ListBoxItem}"
+                   BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                <Style.Triggers>
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                        <Setter Property="Background" Value="#165570"></Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

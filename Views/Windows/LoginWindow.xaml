@@ -7,14 +7,33 @@
         mc:Ignorable="d"
         
         Title="LoginWindow" Height="300" Width="600"
+        WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         Background="#2B2F47"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}">
     <Grid>
+        <Rectangle Grid.Column="0"
+                   MouseDown="MoveWindow"
+                   Fill="Transparent"
+                   VerticalAlignment="Top" Height="50" />
+
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" 
+                    Orientation="Horizontal">
+            <Button Click="MinimizedWindow"
+                Content="–" FontSize="25"
+                Background="Transparent" BorderThickness="0" 
+                Height="45" Width="51" Cursor="Hand"/>
+            <Button Click="CloseWindow"
+                Content="×" FontSize="25"
+                Background="Transparent" BorderThickness="0" 
+                Height="45" Width="51" Cursor="Hand"/>
+        </StackPanel>
+        
         <Label Content="SecurePass" FontSize="45" FontFamily="{StaticResource Montserrat-ExtraBold}"
                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"                     
-               VerticalAlignment="Top"/>
-        <Grid Margin="0,70,0,0">
+               VerticalAlignment="Top"
+               Margin="0,30,0,0"/>
+        <Grid Margin="0,110,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>

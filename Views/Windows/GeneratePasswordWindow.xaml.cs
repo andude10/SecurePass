@@ -20,6 +20,10 @@ namespace SecurePass.Views
             InitializeComponent();
             DataContext = this;
             Owner = App.Current.MainWindow;
+
+            AddUpperCase = true;
+            AddNumbers = true;
+            Maxlength = "12";
         }
         private bool _addUpperCase;
         public bool AddUpperCase
@@ -90,6 +94,7 @@ namespace SecurePass.Views
 
                     // Show password in application
                     Password = pass;
+                    this.DialogResult = true;
                 }
                 else throw new Exception();
             }

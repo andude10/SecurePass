@@ -18,6 +18,7 @@ namespace SecurePass.ViewModels
         public NotesVM()
         {
             Notes = AccountModelBL.GetNotes().ToList();
+            ActualNotes = new ObservableCollection<Note>(Notes);
         }
 
         private List<Note> _notes;
@@ -100,7 +101,8 @@ namespace SecurePass.ViewModels
         }
         private void UpdateView()
         {
-            Notes = AccountModelBL.GetNotes().ToList(); ;
+            Notes = AccountModelBL.GetNotes().ToList();
+            ActualNotes = new ObservableCollection<Note>(Notes);
         }
     }
 }

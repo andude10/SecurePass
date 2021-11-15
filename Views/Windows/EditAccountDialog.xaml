@@ -24,28 +24,36 @@
 
         <Grid Margin="0,50,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel HorizontalAlignment="Left" Margin="15">
                 <Label Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"/>
+                   FontSize="20"
+                   Margin="10"/>
                 <Label Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"/>
+                   FontSize="20"
+                   Margin="10"/>
                 <Label Content="Website" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"/>
+                   FontSize="20"
+                   Margin="10"/>
                 <Label Content="Category" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"/>
+                   FontSize="20"
+                   Margin="10"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="0,0,15,0">
                 <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"    
-                     VerticalAlignment="Top" FontSize="20" />
+                     VerticalAlignment="Top" FontSize="20" 
+                     Margin="10"/>
                 <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"    
-                     VerticalAlignment="Top" FontSize="20" />
+                     VerticalAlignment="Top" FontSize="20" 
+                     Margin="10"/>
                 <TextBox Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"      
-                     VerticalAlignment="Top" FontSize="20" />
+                     VerticalAlignment="Top" FontSize="20" 
+                     Margin="10"/>
                 <TextBox Text="{Binding Category, UpdateSourceTrigger=PropertyChanged}"       
-                     VerticalAlignment="Top" FontSize="20" />
+                     VerticalAlignment="Top" FontSize="20" 
+                     Margin="10"/>
             </StackPanel>
         </Grid>
         <Button Click="ReadyAccountClick" Content="Ready" FontSize="26"

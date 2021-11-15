@@ -7,6 +7,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SecurePass.Services;
+using System.Windows;
 
 namespace SecurePass.ViewModels
 {
@@ -109,6 +110,29 @@ namespace SecurePass.ViewModels
                     Accounts.Remove(account);
                     AccountModelBL.RemoveAccount(account);
                     UpdateView();
+                });
+            }
+        }
+        private ICommand _allPassword;
+        public ICommand AllPassword
+        {
+            get
+            {
+                return _allPassword ??= new RelayCommand(() =>
+                {
+                    ActualAccounts = new ObservableCollection<Account>(Accounts);
+                });
+            }
+        }
+        private ICommand _copyPassword;
+        public ICommand CopyPassword
+        {
+            get
+            {
+                return _copyPassword ??= new RelayCommand<int>(obj =>
+                {
+                    int id = obj;
+                    Clipboard.SetText(Accounts.Find(ch => ch.AccountId == id).Password);
                 });
             }
         }

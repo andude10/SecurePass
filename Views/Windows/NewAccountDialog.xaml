@@ -25,31 +25,46 @@
 
         <Grid Margin="0,50,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130"></ColumnDefinition>
+                <ColumnDefinition Width="149"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel HorizontalAlignment="Left" Margin="15">
                 <Label Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"/>
+                   FontSize="20"
+                   Margin="10"/>
                 <Label Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"/>
+                   FontSize="20"
+                   Margin="10"/>
                 <Label Content="Website" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"/>
+                   FontSize="20"
+                   Margin="10"/>
                 <Label Content="Category" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"/>
+                   FontSize="20"
+                   Margin="10"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="0,0,15,0">
-                <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"    
-                     VerticalAlignment="Top" FontSize="20" Cursor="IBeam" />
-                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"    
-                     VerticalAlignment="Top" FontSize="20" />
-                <TextBox Text="{Binding Url, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"      
-                     VerticalAlignment="Top" FontSize="20" />
-                <TextBox Text="{Binding Category, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"       
-                     VerticalAlignment="Top" FontSize="20" />
+                <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"    
+                     VerticalAlignment="Top" FontSize="20" Cursor="IBeam" 
+                     Margin="10"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="passwordTextBox"
+                             Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"    
+                             VerticalAlignment="Top" FontSize="20" Cursor="IBeam" 
+                             Width="185" Margin="10"/>
+                    <Button Click="GeneratePassword_Click"
+                        Content="Generate password" FontSize="14"
+                        Cursor="Hand"
+                        Width="155" Height="30" Margin="10"/>
+                </StackPanel>
+                <TextBox Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"      
+                     VerticalAlignment="Top" FontSize="20" 
+                     Margin="10"/>
+                <TextBox Text="{Binding Category, UpdateSourceTrigger=PropertyChanged}"       
+                     VerticalAlignment="Top" FontSize="20" 
+                     Margin="10"/>
             </StackPanel>
         </Grid>
-        <Button Click="AddAccountClick" Content="Add" FontSize="26"
-                Height="50" VerticalAlignment="Bottom"/>
+        <Button Click="AddAccountClick" Content="Ok" FontSize="26"
+                Height="50" VerticalAlignment="Bottom" Cursor="Hand"/>
     </Grid>
 </Window>

@@ -15,7 +15,7 @@
         
         <Border Background="#1C698A" BorderThickness="1" CornerRadius="8"
                 Margin="35,70,35,35">
-            <ListBox ItemsSource="{Binding ActualAccountChanges, UpdateSourceTrigger=PropertyChanged}"
+            <ListBox ItemsSource="{Binding ActualAccountChanges, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
                      ScrollViewer.CanContentScroll="False"
                      Height="550">
@@ -42,7 +42,7 @@
                                                       Path=DataContext.CopyChangetext}" 
                                     CommandParameter="{Binding AccountChangeId}"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                    Margin="10" Grid.Column="2"/>
+                                    Margin="8" Grid.Column="2"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

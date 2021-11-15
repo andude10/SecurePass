@@ -36,7 +36,7 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="#1C61BA" BorderThickness="5" CornerRadius="8"
+                        <Border BorderBrush="#1C698A" BorderThickness="5" CornerRadius="8"
                                 Width="292">
                             <Grid Margin="10">
                                 <Grid.RowDefinitions>
@@ -50,7 +50,7 @@
                                                FontSize="15" FontFamily="{StaticResource Montserrat-Light}"
                                                Foreground="LightGray"/>
                                 </StackPanel>
-                                <Border Background="#1C61BA" CornerRadius="8"
+                                <Border Background="#1C698A" CornerRadius="8"
                                         Grid.Row="1">
                                     <TextBlock Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
                                                FontSize="14" FontFamily="Montserrat"

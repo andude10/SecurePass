@@ -35,11 +35,5 @@ namespace SecurePass.Views
                 message.Reply(editAccountDialog.EditAccount);
             }
         }
-
-        private void GeneratePassword_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            GeneratePasswordWindow generatePassword = new GeneratePasswordWindow();
-            generatePassword.ShowDialog();
-        }
     }
 }

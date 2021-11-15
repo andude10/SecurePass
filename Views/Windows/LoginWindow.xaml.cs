@@ -39,5 +39,20 @@ namespace SecurePass.Views
             if (this.DataContext != null)
             { ((dynamic)this.DataContext).Master_password = ((PasswordBox)sender).SecurePassword; }
         }
+
+        private void CloseWindow(object sender, System.Windows.RoutedEventArgs e) => this.Close();
+        private void MinimizedWindow(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+        private void MaximizedWindow(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Maximized;
+
+        }
+        private void MoveWindow(object sender, System.Windows.RoutedEventArgs e)
+        {
+            DragMove();
+        }
     }
 }

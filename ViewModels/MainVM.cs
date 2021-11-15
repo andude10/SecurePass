@@ -9,11 +9,11 @@ namespace SecurePass.ViewModels
         public MainVM()
         {
             ViewModelManager.AccountsVM = new AccountsVM();
-            ViewModelManager.HistoryVM = new HistoryVM();
             ViewModelManager.NotesVM = new NotesVM();
             OnSerching += ViewModelManager.AccountsVM.SearchingData;
-            OnSerching += ViewModelManager.HistoryVM.SearchingData;
             OnSerching += ViewModelManager.NotesVM.SearchingData;
+
+            CurrentContent = ViewModelManager.AccountsVM;
         }
         public delegate void Serching(string enteredText);
         public event Serching OnSerching;
@@ -48,6 +48,7 @@ namespace SecurePass.ViewModels
                 {
                     //a new instance of HistroyVM is created each time to update the changes
                     ViewModelManager.HistoryVM = new HistoryVM();
+                    OnSerching += ViewModelManager.HistoryVM.SearchingData;
                     CurrentContent = ViewModelManager.HistoryVM;
                 });
             }

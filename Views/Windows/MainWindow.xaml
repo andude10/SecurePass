@@ -17,6 +17,18 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Title="MainWindow" 
         Height="750" Width="1200">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="SectionButton" BasedOn="{StaticResource MaterialDesignFlatButton}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#32C0FC"></Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Foreground" Value="White"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
     <Grid>
         <Rectangle Grid.Column="0"
@@ -55,9 +67,9 @@
             <TextBox x:Name="SearchTextBox"
                      VerticalAlignment="Center" HorizontalAlignment="Left"
                      materialdesign:HintAssist.Hint="Search.."
-                     FontSize="20" FontFamily="{StaticResource Montserrat-Regular}"
+                     FontSize="19" FontFamily="{StaticResource Montserrat-Regular}"
                      VerticalContentAlignment="Bottom"
-                     Grid.Column="1" Width="200" Height="30" Margin="50,0,0,0">
+                     Grid.Column="1" Width="200" Height="32" Margin="50,0,0,0">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="KeyUp">
                         <i:InvokeCommandAction Command="{Binding Searching}"
@@ -68,26 +80,31 @@
 
             <StackPanel Grid.Row="1">
                 <Button Content="Passwords"
-                    Command="{Binding OpenPasswordsPage}"
-                    HorizontalContentAlignment="Left"
-                    Background="Transparent" BorderBrush="Transparent"
-                    FontSize="18" 
-                    VerticalAlignment="Center" 
-                    Margin="7" Cursor="Hand"/>
+                        Command="{Binding OpenPasswordsPage}"
+                        Style="{StaticResource SectionButton}"
+                        HorizontalContentAlignment="Left"
+                        Background="Transparent" BorderBrush="Transparent"
+                        FontSize="18" 
+                        VerticalAlignment="Center" 
+                        Margin="7" Cursor="Hand"/>
+                
                 <Button Content="History" 
-                    Command="{Binding OpenHistoryPage}"
-                    HorizontalContentAlignment="Left"
-                    Background="Transparent" BorderBrush="Transparent"
-                    FontSize="18" 
-                    VerticalAlignment="Center" 
-                    Margin="7" Cursor="Hand"/>
-                <Button Command="{Binding OpenNotesPage}"
-                    Content="Notes" 
-                    HorizontalContentAlignment="Left"
-                    Background="Transparent" BorderBrush="Transparent"
-                    FontSize="18" 
-                    VerticalAlignment="Center" 
-                    Margin="7" Cursor="Hand"/>
+                        Command="{Binding OpenHistoryPage}"
+                        Style="{StaticResource SectionButton}"
+                        HorizontalContentAlignment="Left"
+                        Background="Transparent" BorderBrush="Transparent"
+                        FontSize="18" 
+                        VerticalAlignment="Center" 
+                        Margin="7" Cursor="Hand"/>
+                
+                <Button Content="Notes" 
+                        Command="{Binding OpenNotesPage}"
+                        Style="{StaticResource SectionButton}"
+                        HorizontalContentAlignment="Left"
+                        Background="Transparent" BorderBrush="Transparent"
+                        FontSize="18" 
+                        VerticalAlignment="Center" 
+                        Margin="7" Cursor="Hand"/>
             </StackPanel>
 
             <Grid Grid.Row="1" Grid.Column="1">
