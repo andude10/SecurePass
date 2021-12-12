@@ -1,5 +1,4 @@
 # SecurePass
-Simple password manager
 
 Password manager application, on login, if the master-password is correct, the SQLite database is decrypted. On exit, the database is encrypted back.
 
