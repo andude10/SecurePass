@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace SecurePass.Views
 {
     /// <summary>
-    /// Логика взаимодействия для HistoryPage.xaml
+    /// Interaction logic for HistoryPage.xaml
     /// </summary>
     public partial class HistoryUC : UserControl
     {

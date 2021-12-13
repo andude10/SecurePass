@@ -1,46 +1,47 @@
-﻿using SecurePass.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using SecurePass.Models;
 
 namespace SecurePass.Views
 {
     /// <summary>
-    /// Логика взаимодействия для NewNoteWindow.xaml
+    ///     Interaction logic for NewNoteWindow.xaml
     /// </summary>
     public partial class NewNoteWindow : Window
     {
-        public Note NewNote = new Note();
+        public Note NewNote = new();
+
         public NewNoteWindow()
         {
             InitializeComponent();
             DataContext = NewNote;
-            Owner = App.Current.MainWindow;
+            Owner = Application.Current.MainWindow;
         }
-        private void CloseWindow(object sender, System.Windows.RoutedEventArgs e) => this.Close();
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
-                case Key.Escape: this.DialogResult = true; this.Close(); break;
-                case Key.Enter: this.DialogResult = true; this.Close(); break;
+                case Key.Escape:
+                    DialogResult = true;
+                    Close();
+                    break;
+                case Key.Enter:
+                    DialogResult = true;
+                    Close();
+                    break;
             }
         }
 
         private void ReadyNoteClick(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-            this.Close();
+            DialogResult = true;
+            Close();
         }
     }
 }

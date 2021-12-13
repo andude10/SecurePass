@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SecurePass.Models;
-using Microsoft.Data.Sqlite;
+﻿using System;
 using System.IO;
-using System.Security;
-using System;
-using System.Runtime.InteropServices;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.Security;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using SecurePass.Models;
 
 namespace SecurePass.SQLite
 {
@@ -15,64 +15,67 @@ namespace SecurePass.SQLite
         public static bool SuccessfulRegistration;
         public static string Name;
 
-        public DbSet<Account> Accounts { get; set; }
-        public DbSet<AccountChange> AccountsChanges { get; set; }
-        public DbSet<Note> Notes { get; set; }
-
         public AccountsContext()
-        { }
+        {
+        }
+
         public AccountsContext(SecureString password, string name = "dfuser")
         {
             Password = password;
             Name = name;
             if (File.Exists($"{Name}mcode"))
             {
-                EncryptionPassword encryption = new EncryptionPassword();
-                SecureString mcode = new NetworkCredential("", 
+                var encryption = new EncryptionPassword();
+                var mcode = new NetworkCredential("",
                     encryption.Decrypt(File.ReadAllText($"{Name}mcode"))).SecurePassword;
                 SuccessfulRegistration = PasswordEqual(password, mcode);
             }
             else
             {
-                
-                EncryptionPassword encryption = new EncryptionPassword();
-                using (StreamWriter sw = File.CreateText($"{Name}mcode"))
+                var encryption = new EncryptionPassword();
+                using (var sw = File.CreateText($"{Name}mcode"))
                 {
                     sw.Write(encryption.Encrypt(new NetworkCredential("", Password).Password));
                 }
+
                 SuccessfulRegistration = true;
             }
         }
+
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<AccountChange> AccountsChanges { get; set; }
+        public DbSet<Note> Notes { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = new SqliteConnectionStringBuilder()
+            var connectionString = new SqliteConnectionStringBuilder
             {
                 DataSource = $"{Name}.db",
-                Password = new NetworkCredential("",Password).Password
+                Password = new NetworkCredential("", Password).Password
             }.ToString();
 
             optionsBuilder.UseSqlite(connectionString);
         }
+
         public static bool PasswordEqual(SecureString ss1, SecureString ss2)
         {
-            IntPtr bstr1 = IntPtr.Zero;
-            IntPtr bstr2 = IntPtr.Zero;
+            var bstr1 = IntPtr.Zero;
+            var bstr2 = IntPtr.Zero;
             try
             {
                 bstr1 = Marshal.SecureStringToBSTR(ss1);
                 bstr2 = Marshal.SecureStringToBSTR(ss2);
-                int length1 = Marshal.ReadInt32(bstr1, -4);
-                int length2 = Marshal.ReadInt32(bstr2, -4);
+                var length1 = Marshal.ReadInt32(bstr1, -4);
+                var length2 = Marshal.ReadInt32(bstr2, -4);
                 if (length1 == length2)
-                {
-                    for (int x = 0; x < length1; ++x)
+                    for (var x = 0; x < length1; ++x)
                     {
-                        byte b1 = Marshal.ReadByte(bstr1, x);
-                        byte b2 = Marshal.ReadByte(bstr2, x);
+                        var b1 = Marshal.ReadByte(bstr1, x);
+                        var b2 = Marshal.ReadByte(bstr2, x);
                         if (b1 != b2) return false;
                     }
-                }
                 else return false;
+
                 return true;
             }
             finally

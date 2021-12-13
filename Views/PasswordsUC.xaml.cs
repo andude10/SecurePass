@@ -1,12 +1,11 @@
-﻿using Microsoft.Toolkit.Mvvm.Messaging;
+﻿using System.Windows.Controls;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using SecurePass.Services;
-using SecurePass.ViewModels;
-using System.Windows.Controls;
 
 namespace SecurePass.Views
 {
     /// <summary>
-    /// Логика взаимодействия для PasswordsPage.xaml
+    ///     Interaction logic for PasswordsPage.xaml
     /// </summary>
     public partial class PasswordsUC : UserControl
     {
@@ -21,19 +20,14 @@ namespace SecurePass.Views
 
         private static void NewAccount(PasswordsUC recipient, NewAccountWindowMessage message)
         {
-            NewAccountDialog newAccountDialog = new NewAccountDialog();
-            if (newAccountDialog.ShowDialog() == true)
-            {
-                message.Reply(newAccountDialog.NewAccount);
-            }
+            var newAccountDialog = new NewAccountDialog();
+            if (newAccountDialog.ShowDialog() == true) message.Reply(newAccountDialog.NewAccount);
         }
+
         private static void EditAccount(PasswordsUC recipient, EditAccountWindowMessage message)
         {
-            EditAccountDialog editAccountDialog = new EditAccountDialog(message.Account);
-            if (editAccountDialog.ShowDialog() == true)
-            {
-                message.Reply(editAccountDialog.EditAccount);
-            }
+            var editAccountDialog = new EditAccountDialog(message.Account);
+            if (editAccountDialog.ShowDialog() == true) message.Reply(editAccountDialog.EditAccount);
         }
     }
 }

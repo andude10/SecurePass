@@ -10,9 +10,9 @@ namespace SecurePass.Services
 {
     public class EditNoteWindowMessage : RequestMessage<Note>
     {
-        public EditNoteWindowMessage(Note _note)
+        public EditNoteWindowMessage(Note note)
         {
-            Note = _note;
+            Note = note;
         }
         public Note Note { get; set; }
     }

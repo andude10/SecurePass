@@ -1,54 +1,55 @@
-﻿using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
-using SecurePass.Businesslogic;
-using SecurePass.Services;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using SecurePass.Businesslogic;
+using SecurePass.Services;
 
 namespace SecurePass.ViewModels
 {
     public class LoginVM : BaseViewModel
     {
+        private List<string> _dataBaseNames;
+        private string _dbName;
+
+        private ICommand _login;
+        private SecureString _masterPassword;
+
         public LoginVM()
         {
             DataBaseNames = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.db")
-                                     .Select(Path.GetFileNameWithoutExtension)
-                                     .ToList();
+                .Select(Path.GetFileNameWithoutExtension)
+                .ToList();
         }
 
-        private List<string> _dataBaseNames;
         public List<string> DataBaseNames
         {
-            get { return _dataBaseNames; }
-            set { RaisePropertyChanged(ref _dataBaseNames, value); }
-        }
-        private SecureString _master_password;
-        public SecureString Master_password
-        {
-            get { return _master_password; }
-            set { RaisePropertyChanged(ref _master_password, value); }
-        }
-        private string _dbName;
-        public string DbName
-        {
-            get { return _dbName; }
-            set { RaisePropertyChanged(ref _dbName, value); }
+            get => _dataBaseNames;
+            set => RaisePropertyChanged(ref _dataBaseNames, value);
         }
 
-        private ICommand _login;
+        public SecureString MasterPassword
+        {
+            get => _masterPassword;
+            set => RaisePropertyChanged(ref _masterPassword, value);
+        }
+
+        public string DbName
+        {
+            get => _dbName;
+            set => RaisePropertyChanged(ref _dbName, value);
+        }
+
         public ICommand Login
         {
             get
             {
                 return _login ??= new RelayCommand(() =>
                 {
-                    LoginWindowMessage message = new LoginWindowMessage(AccountModelBL.IsPasswordCorrect(Master_password, DbName));
+                    var message = new LoginWindowMessage(AccountModelBL.IsPasswordCorrect(MasterPassword, DbName));
                     WeakReferenceMessenger.Default.Send(message);
                 });
             }

@@ -1,16 +1,19 @@
-﻿using SecurePass.Models;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using SecurePass.Businesslogic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
-using System.Windows;
-using System.Collections.Generic;
+using SecurePass.Businesslogic;
+using SecurePass.Models;
 
 namespace SecurePass.ViewModels
 {
     public class HistoryVM : BaseViewModel
     {
+        private List<AccountChange> _accountChanges;
+        private ObservableCollection<AccountChange> _actualAccountChanges;
+
         public HistoryVM()
         {
             AccountChanges = AccountModelBL.GetAccountsChanges().ToList();
@@ -19,40 +22,48 @@ namespace SecurePass.ViewModels
 
             ActualAccountChanges = new ObservableCollection<AccountChange>(AccountChanges);
         }
-        private List<AccountChange> _accountChanges;
+
         public List<AccountChange> AccountChanges
         {
-            get { return _accountChanges; }
-            set { RaisePropertyChanged(ref _accountChanges, value); }
-        }
-        private ObservableCollection<AccountChange> _actualAccountChanges;
-        public ObservableCollection<AccountChange> ActualAccountChanges
-        {
-            get { return _actualAccountChanges; }
-            set { RaisePropertyChanged(ref _actualAccountChanges, value); }
+            get => _accountChanges;
+            set => RaisePropertyChanged(ref _accountChanges, value);
         }
 
-        #region Command
-        private ICommand _copyChangetext;
-        public ICommand CopyChangetext
+        public ObservableCollection<AccountChange> ActualAccountChanges
         {
-            get
-            {
-                return _copyChangetext ??= new RelayCommand<int>(obj =>
-                {
-                    int id = obj;
-                    Clipboard.SetText(AccountChanges.Find(ch => ch.AccountChangeId == id).Change);
-                });
-            }
+            get => _actualAccountChanges;
+            set => RaisePropertyChanged(ref _actualAccountChanges, value);
         }
-        #endregion
+
         public override void SearchingData(string enteredText)
         {
             ActualAccountChanges = new ObservableCollection<AccountChange>(AccountChanges.Where(ach =>
             {
-                var alltext = ach.Change + ach.Date;
-                return alltext.ToLower().Contains(enteredText.ToLower());
+                var allText = ach.Change + ach.Date;
+                return allText.ToLower().Contains(enteredText.ToLower());
             }));
         }
+
+        #region Command
+
+        private ICommand _copyChangeText;
+
+        public ICommand CopyChangeText
+        {
+            get
+            {
+                return _copyChangeText ??= new RelayCommand<int>(obj =>
+                {
+                    var id = obj;
+                    var change = AccountChanges.Find(ch => ch.AccountChangeId == id)?.Change;
+
+                    if (change == null) return;
+
+                    Clipboard.SetText(change);
+                });
+            }
+        }
+
+        #endregion
     }
 }

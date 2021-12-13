@@ -10,9 +10,9 @@ namespace SecurePass.Services
 {
     public class EditAccountWindowMessage : RequestMessage<Account>
     {
-        public EditAccountWindowMessage(Account _account)
+        public EditAccountWindowMessage(Account account)
         {
-            Account = _account;
+            Account = account;
         }
         public Account Account { get; set; }
     }

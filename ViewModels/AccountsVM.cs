@@ -1,18 +1,26 @@
-﻿using SecurePass.Models;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using SecurePass.Businesslogic;
-using Microsoft.Toolkit.Mvvm.Input;
-using System.Windows.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
-using SecurePass.Services;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
+using System.Windows.Input;
+using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using SecurePass.Businesslogic;
+using SecurePass.Models;
+using SecurePass.Services;
 
 namespace SecurePass.ViewModels
 {
     public class AccountsVM : BaseViewModel
     {
+        private List<Account> _accounts;
+        private ObservableCollection<Account> _actualAccounts;
+        private ObservableCollection<string> _categories;
+
+        private string _selectedCategory;
+
         public AccountsVM()
         {
             Accounts = AccountModelBL.GetAccounts().ToList();
@@ -21,99 +29,133 @@ namespace SecurePass.ViewModels
             UpdateView();
         }
 
-        private List<Account> _accounts;
         public List<Account> Accounts
         {
-            get { return _accounts; }
-            set { RaisePropertyChanged(ref _accounts, value); }
-        }
-        private ObservableCollection<Account> _actualAccounts;
-        public ObservableCollection<Account> ActualAccounts
-        {
-            get { return _actualAccounts; }
-            set { RaisePropertyChanged(ref _actualAccounts, value); }
-        }
-        private ObservableCollection<string> _categories;
-        public ObservableCollection<string> Categories
-        {
-            get { return _categories; }
-            set { RaisePropertyChanged(ref _categories, value); }
+            get => _accounts;
+            set => RaisePropertyChanged(ref _accounts, value);
         }
 
-        private string _selectedCategory;
+        public ObservableCollection<Account> ActualAccounts
+        {
+            get => _actualAccounts;
+            set => RaisePropertyChanged(ref _actualAccounts, value);
+        }
+
+        public ObservableCollection<string> Categories
+        {
+            get => _categories;
+            set => RaisePropertyChanged(ref _categories, value);
+        }
+
         public string SelectedCategory
         {
-            get { return _selectedCategory; }
-            set 
+            get => _selectedCategory;
+            set
             {
                 RaisePropertyChanged(ref _selectedCategory, value);
                 ActualAccounts = new ObservableCollection<Account>(Accounts.Where(a => a.Category == SelectedCategory));
             }
         }
 
+        public override void SearchingData(string enteredText)
+        {
+            ActualAccounts = new ObservableCollection<Account>(Accounts.Where(a =>
+            {
+                var allText = a.Url + a.Username;
+                return allText.ToLower().Contains(enteredText.ToLower());
+            }));
+        }
+
+        private void UpdateView()
+        {
+            var categories = Accounts.Select(a => a.Category).ToList();
+            Categories = new ObservableCollection<string>(categories.Distinct().ToList());
+            ActualAccounts = new ObservableCollection<Account>(Accounts.Where(a => a.Category == SelectedCategory));
+        }
+
         #region Commands
+
         private ICommand _addAccount;
+
         public ICommand AddAccount
         {
             get
             {
                 return _addAccount ??= new RelayCommand(() =>
+                {
+                    Account newAccount;
+                    try
                     {
-                        Account newAccount;
-                        try
-                        {
-                            newAccount = WeakReferenceMessenger.Default.Send<NewAccountWindowMessage>();
-                        }
-                        catch (System.InvalidOperationException)
-                        { return; }
-                        if (newAccount.Category == null)
-                            newAccount.Category = "No category";
-                        AccountModelBL.AddAccount(newAccount);
-                        Accounts.Add(newAccount);
-                        UpdateView();
-                    });
+                        newAccount = WeakReferenceMessenger.Default.Send<NewAccountWindowMessage>();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        return;
+                    }
+
+                    newAccount.Category ??= "No category";
+
+                    AccountModelBL.AddAccount(newAccount);
+                    Accounts.Add(newAccount);
+
+                    UpdateView();
+                });
             }
         }
+
         private ICommand _editAccount;
+
         public ICommand EditAccount
         {
             get
             {
                 return _editAccount ??= new RelayCommand<int>(obj =>
                 {
-                    int id = obj;
-                    Account account = Accounts.Find(a => a.AccountId == id);
-                    string oldpass = account.Password;
-                    try
+                    var id = obj;
+                    var account = Accounts.Find(a => a.AccountId == id);
+                    if (account != null)
                     {
-                        EditAccountWindowMessage editWindow = new EditAccountWindowMessage(account);
-                        account = WeakReferenceMessenger.Default.Send(editWindow);
+                        var oldPass = account.Password;
+                        try
+                        {
+                            var editWindow = new EditAccountWindowMessage(account);
+                            account = WeakReferenceMessenger.Default.Send(editWindow);
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            return;
+                        }
+
+                        account.Category ??= "No category";
+                        AccountModelBL.SetAccount(account, oldPass);
                     }
-                    catch (System.InvalidOperationException)
-                    { return; }
-                    if (account.Category == null)
-                        account.Category = "No category";
-                    AccountModelBL.SetAccount(account, oldpass);
+
                     UpdateView();
                 });
             }
         }
+
         private ICommand _deleteAccount;
+
         public ICommand DeleteAccount
         {
             get
             {
                 return _deleteAccount ??= new RelayCommand<int>(obj =>
                 {
-                    int id = obj;
-                    Account account = Accounts.Find(a => a.AccountId == id);
+                    var id = obj;
+                    var account = Accounts.Find(a => a.AccountId == id);
+
                     Accounts.Remove(account);
                     AccountModelBL.RemoveAccount(account);
+
                     UpdateView();
                 });
             }
         }
+
         private ICommand _allPassword;
+
         public ICommand AllPassword
         {
             get
@@ -124,32 +166,21 @@ namespace SecurePass.ViewModels
                 });
             }
         }
+
         private ICommand _copyPassword;
+
         public ICommand CopyPassword
         {
             get
             {
                 return _copyPassword ??= new RelayCommand<int>(obj =>
                 {
-                    int id = obj;
+                    var id = obj;
                     Clipboard.SetText(Accounts.Find(ch => ch.AccountId == id).Password);
                 });
             }
         }
+
         #endregion
-        public override void SearchingData(string enteredText)
-        {
-            ActualAccounts = new ObservableCollection<Account>(Accounts.Where(a =>
-            {
-                var alltext = a.Url + a.Username ;
-                return alltext.ToLower().Contains(enteredText.ToLower());
-            }));
-        }
-        private void UpdateView()
-        {
-            var categories = Accounts.Select(a => a.Category).ToList();
-            Categories = new ObservableCollection<string>(categories.Distinct().ToList());
-            ActualAccounts = new ObservableCollection<Account>(Accounts.Where(a => a.Category == SelectedCategory));
-        }
     }
 }

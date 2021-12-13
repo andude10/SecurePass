@@ -8,9 +8,9 @@ namespace SecurePass.Services
 {
     public class LoginWindowMessage
     {
-        public LoginWindowMessage(bool _isSuccessful)
+        public LoginWindowMessage(bool isSuccessful)
         {
-            IsSuccessful = _isSuccessful;
+            IsSuccessful = isSuccessful;
         }
         public bool IsSuccessful { get; set; }
     }
