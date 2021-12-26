@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using SecurePass.Businesslogic;
+using SecurePass.Repositories;
 using SecurePass.Models;
 using SecurePass.Services;
 
@@ -18,9 +18,13 @@ namespace SecurePass.ViewModels
 
         private List<Note> _notes;
 
+        private INotesRepository _notesRepository;
+
         public NotesVM()
         {
-            Notes = AccountModelBL.GetNotes().ToList();
+            _notesRepository = new NotesRepository();
+
+            Notes = _notesRepository.GetNotes().ToList();
             ActualNotes = new ObservableCollection<Note>(Notes);
         }
 
@@ -47,7 +51,7 @@ namespace SecurePass.ViewModels
 
         private void UpdateView()
         {
-            Notes = AccountModelBL.GetNotes().ToList();
+            Notes = _notesRepository.GetNotes().ToList();
             ActualNotes = new ObservableCollection<Note>(Notes);
         }
 
@@ -72,7 +76,7 @@ namespace SecurePass.ViewModels
                     }
 
                     newNote.Date = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-                    AccountModelBL.AddNote(newNote);
+                    _notesRepository.AddNote(newNote);
                     UpdateView();
                 });
             }
@@ -98,7 +102,7 @@ namespace SecurePass.ViewModels
                         return;
                     }
 
-                    AccountModelBL.SetNote(note);
+                    _notesRepository.SetNote(note);
                     UpdateView();
                 });
             }
@@ -114,7 +118,7 @@ namespace SecurePass.ViewModels
                 {
                     var id = obj;
                     var note = Notes.Find(a => a.NoteId == id);
-                    AccountModelBL.RemoveNote(note);
+                    _notesRepository.RemoveNote(note);
                     UpdateView();
                 });
             }

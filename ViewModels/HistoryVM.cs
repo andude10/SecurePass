@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
-using SecurePass.Businesslogic;
+using SecurePass.Repositories;
 using SecurePass.Models;
 
 namespace SecurePass.ViewModels
@@ -13,10 +13,14 @@ namespace SecurePass.ViewModels
     {
         private List<AccountChange> _accountChanges;
         private ObservableCollection<AccountChange> _actualAccountChanges;
+        private IAccountsChangesRepository _accountsChangesRepository;
 
         public HistoryVM()
         {
-            AccountChanges = AccountModelBL.GetAccountsChanges().ToList();
+            _accountsChangesRepository = new AccountsChangesRepository();
+
+            AccountChanges = _accountsChangesRepository.GetAccountsChanges().ToList();
+            
             // reverse so that new changes are at the top
             AccountChanges.Reverse();
 

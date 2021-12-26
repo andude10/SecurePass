@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using SecurePass.Businesslogic;
+using SecurePass.Repositories;
 using SecurePass.Models;
 using SecurePass.Services;
 
@@ -18,12 +17,14 @@ namespace SecurePass.ViewModels
         private List<Account> _accounts;
         private ObservableCollection<Account> _actualAccounts;
         private ObservableCollection<string> _categories;
+        private IAccountsRepository _accountsRepository;
 
         private string _selectedCategory;
 
         public AccountsVM()
         {
-            Accounts = AccountModelBL.GetAccounts().ToList();
+            _accountsRepository = new AccountsRepository(new AccountsChangesRepository());
+            Accounts = _accountsRepository.GetAccounts().ToList();
             Categories = new ObservableCollection<string>();
             ActualAccounts = new ObservableCollection<Account>(Accounts);
             UpdateView();
@@ -95,7 +96,7 @@ namespace SecurePass.ViewModels
 
                     newAccount.Category ??= "No category";
 
-                    AccountModelBL.AddAccount(newAccount);
+                    _accountsRepository.AddAccount(newAccount);
                     Accounts.Add(newAccount);
 
                     UpdateView();
@@ -127,7 +128,7 @@ namespace SecurePass.ViewModels
                         }
 
                         account.Category ??= "No category";
-                        AccountModelBL.SetAccount(account, oldPass);
+                        _accountsRepository.SetAccount(account, oldPass);
                     }
 
                     UpdateView();
@@ -147,7 +148,7 @@ namespace SecurePass.ViewModels
                     var account = Accounts.Find(a => a.AccountId == id);
 
                     Accounts.Remove(account);
-                    AccountModelBL.RemoveAccount(account);
+                    _accountsRepository.RemoveAccount(account);
 
                     UpdateView();
                 });

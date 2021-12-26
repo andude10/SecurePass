@@ -5,7 +5,6 @@ using System.Security;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using SecurePass.Businesslogic;
 using SecurePass.Services;
 
 namespace SecurePass.ViewModels
@@ -49,7 +48,9 @@ namespace SecurePass.ViewModels
             {
                 return _login ??= new RelayCommand(() =>
                 {
-                    var message = new LoginWindowMessage(AccountModelBL.IsPasswordCorrect(MasterPassword, DbName));
+                    var authentication = new UserAuthentication();
+                    var message = new LoginWindowMessage(authentication.Authentication(MasterPassword, DbName));
+
                     WeakReferenceMessenger.Default.Send(message);
                 });
             }
