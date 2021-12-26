@@ -9,6 +9,6 @@ The application has the following features:
 - Protected notes
 - Creating the SQLCipher base, knowing the master-password, you can decrypt the base through other programs
 
-A bit about implementation:
-I used the MVVM pattern using the Microsoft.Toolkit.Mvvm library. All VMs do not interact with the database directly; business logic is used for this.
-There was a problem with encrypting the database because standard SQLite does not support encryption. So I used SQLCipher, which can be encrypted.
+A bit about the implementation:
+I used MVVM pattern using Microsoft.Toolkit.Mvvm library. To create an abstraction layer between the data access layer and the business logic layer, the application used the repository pattern.
+There was a problem with database encryption because standard SQLite does not support encryption. So I used SQLCipher which can be encrypted.
