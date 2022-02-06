@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using SecurePass.Models;
 
-namespace SecurePass.Views
+namespace SecurePass.Views.Windows
 {
     /// <summary>
     ///     Interaction logic for EditNoteWindow.xaml
@@ -18,7 +18,9 @@ namespace SecurePass.Views
             InitializeComponent();
             EditNote = editnote;
             DataContext = EditNote;
-            Owner = Application.Current.MainWindow;
+
+            // Get MainWindow
+            Owner = Application.Current.Windows[0];
         }
 
         public Note EditNote

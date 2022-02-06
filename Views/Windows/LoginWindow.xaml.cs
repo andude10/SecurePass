@@ -4,12 +4,12 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 using SecurePass.Services;
 using SecurePass.ViewModels;
 
-namespace SecurePass.Views
+namespace SecurePass.Views.Windows
 {
     /// <summary>
     ///     Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class LoginWindow
     {
         public LoginWindow()
         {
@@ -49,11 +49,6 @@ namespace SecurePass.Views
         private void MinimizedWindow(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
-        }
-
-        private void MaximizedWindow(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Maximized;
         }
 
         private void MoveWindow(object sender, RoutedEventArgs e)

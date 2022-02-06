@@ -4,12 +4,12 @@ using System.Windows;
 using System.Windows.Input;
 using SecurePass.Models;
 
-namespace SecurePass.Views
+namespace SecurePass.Views.Windows
 {
     /// <summary>
     ///     Interaction logic for AddAccount.xaml
     /// </summary>
-    public partial class NewAccountDialog : Window, INotifyPropertyChanged
+    public partial class NewAccountDialog : INotifyPropertyChanged
     {
         private Account _newAccount;
 
@@ -18,7 +18,9 @@ namespace SecurePass.Views
             InitializeComponent();
             NewAccount = new Account();
             DataContext = NewAccount;
-            Owner = Application.Current.MainWindow;
+
+            // Get MainWindow
+            Owner = Application.Current.Windows[0];
         }
 
         public Account NewAccount

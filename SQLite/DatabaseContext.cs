@@ -1,7 +1,6 @@
 ﻿using System;
-using System.IO;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Security;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -12,25 +11,23 @@ namespace SecurePass.SQLite
     public class DatabaseContext : DbContext
     {
         private static SecureString _password;
-        public static string _name;
+        private static string _name;
 
         public DatabaseContext()
         {
-            if(_password == null || _name == null)
-            {
-               throw new ArgumentNullException("_password", "_name");
-            }
+            if (_password == null || _name == null) throw new ArgumentNullException(nameof(DatabaseContext));
         }
 
-        public DatabaseContext(SecureString pass, string name)
+        /// <summary>
+        ///     This constructor must be called first to give value to _password and _name
+        /// </summary>
+        /// <param name="pass"></param>
+        /// <param name="name"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public DatabaseContext([NotNull] SecureString pass, [NotNull] string name)
         {
             _password = pass;
             _name = name;
-
-            if(_password == null || _name == null)
-            {
-               throw new ArgumentNullException("_password", "_name");
-            }
         }
 
         public DbSet<Account> Accounts { get; set; }

@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 
-namespace SecurePass.Views
+namespace SecurePass.Views.Windows
 {
     /// <summary>
     ///     Interaction logic for GeneratePasswordWindow.xaml
     /// </summary>
-    public partial class GeneratePasswordWindow : Window, INotifyPropertyChanged
+    public partial class GeneratePasswordWindow : INotifyPropertyChanged
     {
         private bool _addNumbers;
         private bool _addSymbols;
@@ -21,7 +21,9 @@ namespace SecurePass.Views
         {
             InitializeComponent();
             DataContext = this;
-            Owner = Application.Current.MainWindow;
+
+            // Get MainWindow
+            Owner = Application.Current.Windows[0];
 
             AddUpperCase = true;
             AddNumbers = true;
@@ -60,7 +62,7 @@ namespace SecurePass.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private string generatePassword(int length)
+        private string GeneratePassword(int length)
         {
             var validChars = new StringBuilder();
             if (AddUpperCase) validChars.Append("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -84,7 +86,7 @@ namespace SecurePass.Views
                 if (length < 20)
                 {
                     // Generate password
-                    var pass = generatePassword(length);
+                    var pass = GeneratePassword(length);
 
                     // Show password in application
                     Password = pass;

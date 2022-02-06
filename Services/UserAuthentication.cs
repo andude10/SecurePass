@@ -11,9 +11,9 @@ namespace SecurePass.Services
     {
         public bool Authentication(SecureString password, string name)
         {
-            bool isPasswordCorrect = IsPasswordCorrect(password, name);
+            var isPasswordCorrect = IsPasswordCorrect(password, name);
 
-            if(isPasswordCorrect)
+            if (isPasswordCorrect)
             {
                 using var context = new DatabaseContext(password, name);
                 context.Database.EnsureCreated();
@@ -23,9 +23,9 @@ namespace SecurePass.Services
         }
 
         private bool IsPasswordCorrect(SecureString password, string name)
-        {        
+        {
             bool result;
-            
+
             if (File.Exists($"{name}mcode"))
             {
                 var encryption = new EncryptionPassword();
@@ -44,7 +44,7 @@ namespace SecurePass.Services
 
                 result = true;
             }
-            
+
             return result;
         }
 

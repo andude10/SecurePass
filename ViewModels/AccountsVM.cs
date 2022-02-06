@@ -6,18 +6,19 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using SecurePass.Repositories;
 using SecurePass.Models;
+using SecurePass.Repositories.Implementations;
+using SecurePass.Repositories.Interfaces;
 using SecurePass.Services;
 
 namespace SecurePass.ViewModels
 {
     public class AccountsVM : BaseViewModel
     {
+        private readonly IAccountsRepository _accountsRepository;
         private List<Account> _accounts;
         private ObservableCollection<Account> _actualAccounts;
         private ObservableCollection<string> _categories;
-        private IAccountsRepository _accountsRepository;
 
         private string _selectedCategory;
 
@@ -78,109 +79,82 @@ namespace SecurePass.ViewModels
 
         private ICommand _addAccount;
 
-        public ICommand AddAccount
+        public ICommand AddAccount => _addAccount ??= new RelayCommand(() =>
         {
-            get
+            Account newAccount;
+            try
             {
-                return _addAccount ??= new RelayCommand(() =>
-                {
-                    Account newAccount;
-                    try
-                    {
-                        newAccount = WeakReferenceMessenger.Default.Send<NewAccountWindowMessage>();
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        return;
-                    }
-
-                    newAccount.Category ??= "No category";
-
-                    _accountsRepository.AddAccount(newAccount);
-                    Accounts.Add(newAccount);
-
-                    UpdateView();
-                });
+                newAccount = WeakReferenceMessenger.Default.Send<NewAccountWindowMessage>();
             }
-        }
+            catch (InvalidOperationException)
+            {
+                return;
+            }
+
+            newAccount.Category ??= "No category";
+
+            _accountsRepository.AddAccount(newAccount);
+            Accounts.Add(newAccount);
+
+            UpdateView();
+        });
 
         private ICommand _editAccount;
 
-        public ICommand EditAccount
+        public ICommand EditAccount => _editAccount ??= new RelayCommand<int>(obj =>
         {
-            get
+            var id = obj;
+            var account = Accounts.Find(a => a.AccountId == id);
+            if (account != null)
             {
-                return _editAccount ??= new RelayCommand<int>(obj =>
+                var oldPass = account.Password;
+                try
                 {
-                    var id = obj;
-                    var account = Accounts.Find(a => a.AccountId == id);
-                    if (account != null)
-                    {
-                        var oldPass = account.Password;
-                        try
-                        {
-                            var editWindow = new EditAccountWindowMessage(account);
-                            account = WeakReferenceMessenger.Default.Send(editWindow);
-                        }
-                        catch (InvalidOperationException)
-                        {
-                            return;
-                        }
+                    var editWindow = new EditAccountWindowMessage(account);
+                    account = WeakReferenceMessenger.Default.Send(editWindow);
+                }
+                catch (InvalidOperationException)
+                {
+                    return;
+                }
 
-                        account.Category ??= "No category";
-                        _accountsRepository.SetAccount(account, oldPass);
-                    }
-
-                    UpdateView();
-                });
+                account.Category ??= "No category";
+                _accountsRepository.SetAccount(account, oldPass);
             }
-        }
+
+            UpdateView();
+        });
 
         private ICommand _deleteAccount;
 
-        public ICommand DeleteAccount
+        public ICommand DeleteAccount => _deleteAccount ??= new RelayCommand<int>(obj =>
         {
-            get
-            {
-                return _deleteAccount ??= new RelayCommand<int>(obj =>
-                {
-                    var id = obj;
-                    var account = Accounts.Find(a => a.AccountId == id);
+            var id = obj;
+            var account = Accounts.Find(a => a.AccountId == id);
 
-                    Accounts.Remove(account);
-                    _accountsRepository.RemoveAccount(account);
+            Accounts.Remove(account);
+            _accountsRepository.RemoveAccount(account);
 
-                    UpdateView();
-                });
-            }
-        }
+            UpdateView();
+        });
 
         private ICommand _allPassword;
 
-        public ICommand AllPassword
+        public ICommand AllPassword => _allPassword ??= new RelayCommand(() =>
         {
-            get
-            {
-                return _allPassword ??= new RelayCommand(() =>
-                {
-                    ActualAccounts = new ObservableCollection<Account>(Accounts);
-                });
-            }
-        }
+            ActualAccounts = new ObservableCollection<Account>(Accounts);
+        });
 
         private ICommand _copyPassword;
 
-        public ICommand CopyPassword
+        public ICommand CopyPassword => _copyPassword ??= new RelayCommand<int>(obj =>
         {
-            get
-            {
-                return _copyPassword ??= new RelayCommand<int>(obj =>
-                {
-                    var id = obj;
-                    Clipboard.SetText(Accounts.Find(ch => ch.AccountId == id).Password);
-                });
-            }
-        }
+            var id = obj;
+            if (Accounts == null) return;
+
+            var password = Accounts.Find(ch => ch.AccountId == id)?.Password;
+            if (password != null) Clipboard.SetText(password);
+        });
 
         #endregion
     }

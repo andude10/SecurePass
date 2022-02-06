@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using SecurePass.Models;
 
-namespace SecurePass.Repositories
+namespace SecurePass.Repositories.Interfaces
 {
-    public interface IAccountsRepository : IDisposable
+    public interface IAccountsRepository
     {
         IEnumerable<Account> GetAccounts();
         Account GetAccount(int id);

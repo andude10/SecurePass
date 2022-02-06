@@ -1,13 +1,13 @@
-﻿using System.Windows.Controls;
-using Microsoft.Toolkit.Mvvm.Messaging;
+﻿using Microsoft.Toolkit.Mvvm.Messaging;
 using SecurePass.Services;
+using SecurePass.Views.Windows;
 
 namespace SecurePass.Views
 {
     /// <summary>
     ///     Interaction logic for NotesPage.xaml
     /// </summary>
-    public partial class NotesUC : UserControl
+    public partial class NotesUC
     {
         public NotesUC()
         {

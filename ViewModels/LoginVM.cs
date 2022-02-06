@@ -42,18 +42,16 @@ namespace SecurePass.ViewModels
             set => RaisePropertyChanged(ref _dbName, value);
         }
 
-        public ICommand Login
-        {
-            get
-            {
-                return _login ??= new RelayCommand(() =>
-                {
-                    var authentication = new UserAuthentication();
-                    var message = new LoginWindowMessage(authentication.Authentication(MasterPassword, DbName));
+        #region Commands
 
-                    WeakReferenceMessenger.Default.Send(message);
-                });
-            }
-        }
+        public ICommand Login => _login ??= new RelayCommand(() =>
+        {
+            var authentication = new UserAuthentication();
+            var message = new LoginWindowMessage(authentication.Authentication(MasterPassword, DbName));
+
+            WeakReferenceMessenger.Default.Send(message);
+        });
+
+        #endregion
     }
 }

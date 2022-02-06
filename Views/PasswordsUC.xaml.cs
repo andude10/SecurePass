@@ -1,13 +1,13 @@
-﻿using System.Windows.Controls;
-using Microsoft.Toolkit.Mvvm.Messaging;
+﻿using Microsoft.Toolkit.Mvvm.Messaging;
 using SecurePass.Services;
+using SecurePass.Views.Windows;
 
 namespace SecurePass.Views
 {
     /// <summary>
     ///     Interaction logic for PasswordsPage.xaml
     /// </summary>
-    public partial class PasswordsUC : UserControl
+    public partial class PasswordsUC
     {
         public PasswordsUC()
         {

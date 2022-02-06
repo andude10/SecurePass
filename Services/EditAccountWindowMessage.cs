@@ -1,10 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.Messaging.Messages;
 using SecurePass.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SecurePass.Services
 {
@@ -14,6 +9,7 @@ namespace SecurePass.Services
         {
             Account = account;
         }
+
         public Account Account { get; set; }
     }
 }

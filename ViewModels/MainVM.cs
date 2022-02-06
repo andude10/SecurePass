@@ -32,43 +32,31 @@ namespace SecurePass.ViewModels
 
         private ICommand _openPasswordsPage;
 
-        public ICommand OpenPasswordsPage
+        public ICommand OpenPasswordsPage => _openPasswordsPage ??= new RelayCommand(() =>
         {
-            get
-            {
-                return _openPasswordsPage ??= new RelayCommand(() => { CurrentContent = ViewModelManager.AccountsVM; });
-            }
-        }
+            CurrentContent = ViewModelManager.AccountsVM;
+        });
 
         private ICommand _openHistoryPage;
 
-        public ICommand OpenHistoryPage
+        public ICommand OpenHistoryPage => _openHistoryPage ??= new RelayCommand(() =>
         {
-            get
-            {
-                return _openHistoryPage ??= new RelayCommand(() =>
-                {
-                    //a new instance of HistroyVM is created each time to update the changes
-                    ViewModelManager.HistoryVM = new HistoryVM();
-                    OnSearching += ViewModelManager.HistoryVM.SearchingData;
-                    CurrentContent = ViewModelManager.HistoryVM;
-                });
-            }
-        }
+            //a new instance of HistroyVM is created each time to update the changes
+            ViewModelManager.HistoryVM = new HistoryVM();
+            OnSearching += ViewModelManager.HistoryVM.SearchingData;
+            CurrentContent = ViewModelManager.HistoryVM;
+        });
 
         private ICommand _openNotesPage;
 
-        public ICommand OpenNotesPage
+        public ICommand OpenNotesPage => _openNotesPage ??= new RelayCommand(() =>
         {
-            get { return _openNotesPage ??= new RelayCommand(() => { CurrentContent = ViewModelManager.NotesVM; }); }
-        }
+            CurrentContent = ViewModelManager.NotesVM;
+        });
 
         private ICommand _searching;
 
-        public ICommand Searching
-        {
-            get { return _searching ??= new RelayCommand<string>(obj => { OnSearching(obj); }); }
-        }
+        public ICommand Searching => _searching ??= new RelayCommand<string>(obj => { OnSearching?.Invoke(obj); });
 
         #endregion
     }

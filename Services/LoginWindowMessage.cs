@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SecurePass.Services
+﻿namespace SecurePass.Services
 {
     public class LoginWindowMessage
     {
@@ -12,6 +6,7 @@ namespace SecurePass.Services
         {
             IsSuccessful = isSuccessful;
         }
+
         public bool IsSuccessful { get; set; }
     }
 }

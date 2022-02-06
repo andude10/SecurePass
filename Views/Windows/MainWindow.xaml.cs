@@ -1,18 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Windows;
 using SecurePass.Services;
-using SecurePass.SQLite;
-using SecurePass.ViewModels;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Input;
 
-namespace SecurePass
+namespace SecurePass.Views.Windows
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -20,22 +14,17 @@ namespace SecurePass
             DataContext = ViewModelManager.MainVM;
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            base.OnClosing(e);
+            Close();
         }
 
-        private void CloseWindow(object sender, System.Windows.RoutedEventArgs e) => this.Close();
-        private void MinimizedWindow(object sender, System.Windows.RoutedEventArgs e)
+        private void MinimizedWindow(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
-        private void MaximizedWindow(object sender, System.Windows.RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Maximized;
 
-        }
-        private void MoveWindow(object sender, System.Windows.RoutedEventArgs e)
+        private void MoveWindow(object sender, RoutedEventArgs e)
         {
             DragMove();
         }

@@ -6,19 +6,18 @@ using System.Linq;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using SecurePass.Repositories;
 using SecurePass.Models;
+using SecurePass.Repositories.Implementations;
+using SecurePass.Repositories.Interfaces;
 using SecurePass.Services;
 
 namespace SecurePass.ViewModels
 {
     public class NotesVM : BaseViewModel
     {
+        private readonly INotesRepository _notesRepository;
         private ObservableCollection<Note> _actualNotes;
-
         private List<Note> _notes;
-
-        private INotesRepository _notesRepository;
 
         public NotesVM()
         {
@@ -59,70 +58,52 @@ namespace SecurePass.ViewModels
 
         private ICommand _addNote;
 
-        public ICommand AddNote
+        public ICommand AddNote => _addNote ??= new RelayCommand(() =>
         {
-            get
+            Note newNote;
+            try
             {
-                return _addNote ??= new RelayCommand(() =>
-                {
-                    Note newNote;
-                    try
-                    {
-                        newNote = WeakReferenceMessenger.Default.Send<NewNoteWindowMessage>();
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        return;
-                    }
-
-                    newNote.Date = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-                    _notesRepository.AddNote(newNote);
-                    UpdateView();
-                });
+                newNote = WeakReferenceMessenger.Default.Send<NewNoteWindowMessage>();
             }
-        }
+            catch (InvalidOperationException)
+            {
+                return;
+            }
+
+            newNote.Date = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            _notesRepository.AddNote(newNote);
+            UpdateView();
+        });
 
         private ICommand _editNote;
 
-        public ICommand EditNote
+        public ICommand EditNote => _editNote ??= new RelayCommand<int>(obj =>
         {
-            get
+            var id = obj;
+            var note = Notes.Find(a => a.NoteId == id);
+            try
             {
-                return _editNote ??= new RelayCommand<int>(obj =>
-                {
-                    var id = obj;
-                    var note = Notes.Find(a => a.NoteId == id);
-                    try
-                    {
-                        var editWindow = new EditNoteWindowMessage(note);
-                        note = WeakReferenceMessenger.Default.Send(editWindow);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        return;
-                    }
-
-                    _notesRepository.SetNote(note);
-                    UpdateView();
-                });
+                var editWindow = new EditNoteWindowMessage(note);
+                note = WeakReferenceMessenger.Default.Send(editWindow);
             }
-        }
+            catch (InvalidOperationException)
+            {
+                return;
+            }
+
+            _notesRepository.SetNote(note);
+            UpdateView();
+        });
 
         private ICommand _deleteNote;
 
-        public ICommand DeleteNote
+        public ICommand DeleteNote => _deleteNote ??= new RelayCommand<int>(obj =>
         {
-            get
-            {
-                return _deleteNote ??= new RelayCommand<int>(obj =>
-                {
-                    var id = obj;
-                    var note = Notes.Find(a => a.NoteId == id);
-                    _notesRepository.RemoveNote(note);
-                    UpdateView();
-                });
-            }
-        }
+            var id = obj;
+            var note = Notes.Find(a => a.NoteId == id);
+            _notesRepository.RemoveNote(note);
+            UpdateView();
+        });
 
         #endregion
     }

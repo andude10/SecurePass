@@ -1,13 +1,13 @@
 ﻿<Application x:Class="SecurePass.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SecurePass" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:CustomColorTheme BaseTheme="Dark" PrimaryColor="#217ca3" SecondaryColor="#1C61BA" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <FontFamily x:Key="Montserrat-Bold">./Views/Fonts/Montserrat-Bold.ttf#Montserrat</FontFamily>
             <FontFamily x:Key="Montserrat-ExtraBold">./Views/Fonts/Montserrat-ExtraBold.ttf#Montserrat</FontFamily>
@@ -18,7 +18,7 @@
                    BasedOn="{StaticResource MaterialDesignListBoxItem}">
                 <Style.Triggers>
                     <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                        <Setter Property="Background" Value="#165570"></Setter>
+                        <Setter Property="Background" Value="#165570" />
                     </Trigger>
                 </Style.Triggers>
             </Style>

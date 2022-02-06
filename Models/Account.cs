@@ -1,6 +1,4 @@
-﻿
-
-namespace SecurePass.Models
+﻿namespace SecurePass.Models
 {
     public class Account
     {

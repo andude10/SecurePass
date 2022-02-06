@@ -4,23 +4,23 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
-using SecurePass.Repositories;
 using SecurePass.Models;
+using SecurePass.Repositories.Implementations;
+using SecurePass.Repositories.Interfaces;
 
 namespace SecurePass.ViewModels
 {
     public class HistoryVM : BaseViewModel
     {
+        private readonly IAccountsChangesRepository _accountsChangesRepository;
         private List<AccountChange> _accountChanges;
         private ObservableCollection<AccountChange> _actualAccountChanges;
-        private IAccountsChangesRepository _accountsChangesRepository;
 
         public HistoryVM()
         {
             _accountsChangesRepository = new AccountsChangesRepository();
-
             AccountChanges = _accountsChangesRepository.GetAccountsChanges().ToList();
-            
+
             // reverse so that new changes are at the top
             AccountChanges.Reverse();
 
@@ -52,21 +52,15 @@ namespace SecurePass.ViewModels
 
         private ICommand _copyChangeText;
 
-        public ICommand CopyChangeText
+        public ICommand CopyChangeText => _copyChangeText ??= new RelayCommand<int>(obj =>
         {
-            get
-            {
-                return _copyChangeText ??= new RelayCommand<int>(obj =>
-                {
-                    var id = obj;
-                    var change = AccountChanges.Find(ch => ch.AccountChangeId == id)?.Change;
+            var id = obj;
+            var change = AccountChanges.Find(ch => ch.AccountChangeId == id)?.Change;
 
-                    if (change == null) return;
+            if (change == null) return;
 
-                    Clipboard.SetText(change);
-                });
-            }
-        }
+            Clipboard.SetText(change);
+        });
 
         #endregion
     }

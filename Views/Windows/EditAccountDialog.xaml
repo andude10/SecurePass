@@ -1,62 +1,61 @@
-﻿<Window x:Class="SecurePass.Views.EditAccountDialog"
+﻿<Window x:Class="SecurePass.Views.Windows.EditAccountDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SecurePass.Views"
         mc:Ignorable="d"
-        
+
         Background="#211f30"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Title="EditAccountDialog" Height="400" Width="550" 
-        WindowStartupLocation="CenterOwner" 
+        Title="EditAccountDialog" Height="400" Width="550"
+        WindowStartupLocation="CenterOwner"
         WindowStyle="None" KeyDown="Window_KeyDown">
     <Grid>
         <Button Click="CloseWindow"
                 Content="×" FontSize="25"
                 Background="Transparent" BorderThickness="0"
-                VerticalAlignment="Top" HorizontalAlignment="Right" Height="45" Width="51" Cursor="Hand"/>
+                VerticalAlignment="Top" HorizontalAlignment="Right" Height="45" Width="51" Cursor="Hand" />
 
-        <Label Content="Edit account" FontSize="30" 
+        <Label Content="Edit account" FontSize="30"
                Height="50" Margin="10"
-               FontFamily="Montserrat Bold" 
-               VerticalAlignment="Top" HorizontalAlignment="Center"/>
+               FontFamily="Montserrat Bold"
+               VerticalAlignment="Top" HorizontalAlignment="Center" />
 
         <Grid Margin="0,50,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <StackPanel HorizontalAlignment="Left" Margin="15">
-                <Label Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"
-                   Margin="10"/>
-                <Label Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"
-                   Margin="10"/>
-                <Label Content="Website" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"
-                   Margin="10"/>
-                <Label Content="Category" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                   FontSize="20"
-                   Margin="10"/>
+                <Label Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       FontSize="20"
+                       Margin="10" />
+                <Label Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       FontSize="20"
+                       Margin="10" />
+                <Label Content="Website" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       FontSize="20"
+                       Margin="10" />
+                <Label Content="Category" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       FontSize="20"
+                       Margin="10" />
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="0,0,15,0">
-                <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"    
-                     VerticalAlignment="Top" FontSize="20" 
-                     Margin="10"/>
-                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"    
-                     VerticalAlignment="Top" FontSize="20" 
-                     Margin="10"/>
-                <TextBox Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"      
-                     VerticalAlignment="Top" FontSize="20" 
-                     Margin="10"/>
-                <TextBox Text="{Binding Category, UpdateSourceTrigger=PropertyChanged}"       
-                     VerticalAlignment="Top" FontSize="20" 
-                     Margin="10"/>
+                <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Top" FontSize="20"
+                         Margin="10" />
+                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Top" FontSize="20"
+                         Margin="10" />
+                <TextBox Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Top" FontSize="20"
+                         Margin="10" />
+                <TextBox Text="{Binding Category, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Top" FontSize="20"
+                         Margin="10" />
             </StackPanel>
         </Grid>
         <Button Click="ReadyAccountClick" Content="Ready" FontSize="26"
-                Height="50" VerticalAlignment="Bottom" Cursor="Hand"/>
+                Height="50" VerticalAlignment="Bottom" Cursor="Hand" />
     </Grid>
 </Window>

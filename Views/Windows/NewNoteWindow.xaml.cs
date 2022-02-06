@@ -2,12 +2,12 @@
 using System.Windows.Input;
 using SecurePass.Models;
 
-namespace SecurePass.Views
+namespace SecurePass.Views.Windows
 {
     /// <summary>
     ///     Interaction logic for NewNoteWindow.xaml
     /// </summary>
-    public partial class NewNoteWindow : Window
+    public partial class NewNoteWindow
     {
         public Note NewNote = new();
 
@@ -15,7 +15,9 @@ namespace SecurePass.Views
         {
             InitializeComponent();
             DataContext = NewNote;
-            Owner = Application.Current.MainWindow;
+
+            // Get MainWindow
+            Owner = Application.Current.Windows[0];
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)

@@ -4,12 +4,12 @@ using System.Windows;
 using System.Windows.Input;
 using SecurePass.Models;
 
-namespace SecurePass.Views
+namespace SecurePass.Views.Windows
 {
     /// <summary>
     ///     Interaction logic forEditAccountDialog.xaml
     /// </summary>
-    public partial class EditAccountDialog : Window, INotifyPropertyChanged
+    public partial class EditAccountDialog : INotifyPropertyChanged
     {
         private Account _editAccount;
 
@@ -18,7 +18,9 @@ namespace SecurePass.Views
             InitializeComponent();
             EditAccount = editAccount;
             DataContext = EditAccount;
-            Owner = Application.Current.MainWindow;
+
+            // Get MainWindow
+            Owner = Application.Current.Windows[0];
         }
 
         public Account EditAccount
