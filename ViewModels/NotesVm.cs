@@ -7,23 +7,23 @@ using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SecurePass.Models;
-using SecurePass.Repositories.Implementations;
-using SecurePass.Repositories.Interfaces;
+using SecurePass.Repositories.UnitOfWork;
 using SecurePass.Services;
 
 namespace SecurePass.ViewModels
 {
-    public class NotesVM : BaseViewModel
+    public class NotesVm : BaseViewModel
     {
-        private readonly INotesRepository _notesRepository;
+        private readonly IUnitOfWork _unitOfWork;
+
         private ObservableCollection<Note> _actualNotes;
         private List<Note> _notes;
 
-        public NotesVM()
+        public NotesVm(IUnitOfWork unitOfWork)
         {
-            _notesRepository = new NotesRepository();
+            _unitOfWork = unitOfWork;
 
-            Notes = _notesRepository.GetNotes().ToList();
+            Notes = _unitOfWork.NotesRepository.GetNotes().ToList();
             ActualNotes = new ObservableCollection<Note>(Notes);
         }
 
@@ -48,9 +48,10 @@ namespace SecurePass.ViewModels
             }));
         }
 
+        //TODO: Remove this crutch
         private void UpdateView()
         {
-            Notes = _notesRepository.GetNotes().ToList();
+            Notes = _unitOfWork.NotesRepository.GetNotes().ToList();
             ActualNotes = new ObservableCollection<Note>(Notes);
         }
 
@@ -71,7 +72,8 @@ namespace SecurePass.ViewModels
             }
 
             newNote.Date = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            _notesRepository.AddNote(newNote);
+            _unitOfWork.NotesRepository.AddNote(newNote);
+            _unitOfWork.Save();
             UpdateView();
         });
 
@@ -91,7 +93,8 @@ namespace SecurePass.ViewModels
                 return;
             }
 
-            _notesRepository.SetNote(note);
+            _unitOfWork.NotesRepository.SetNote(note);
+            _unitOfWork.Save();
             UpdateView();
         });
 
@@ -101,7 +104,8 @@ namespace SecurePass.ViewModels
         {
             var id = obj;
             var note = Notes.Find(a => a.NoteId == id);
-            _notesRepository.RemoveNote(note);
+            _unitOfWork.NotesRepository.RemoveNote(note);
+            _unitOfWork.Save();
             UpdateView();
         });
 

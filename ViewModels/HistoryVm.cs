@@ -5,21 +5,21 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 using SecurePass.Models;
-using SecurePass.Repositories.Implementations;
-using SecurePass.Repositories.Interfaces;
+using SecurePass.Repositories.UnitOfWork;
 
 namespace SecurePass.ViewModels
 {
-    public class HistoryVM : BaseViewModel
+    public class HistoryVm : BaseViewModel
     {
-        private readonly IAccountsChangesRepository _accountsChangesRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private List<AccountChange> _accountChanges;
         private ObservableCollection<AccountChange> _actualAccountChanges;
 
-        public HistoryVM()
+        public HistoryVm(IUnitOfWork unitOfWork)
         {
-            _accountsChangesRepository = new AccountsChangesRepository();
-            AccountChanges = _accountsChangesRepository.GetAccountsChanges().ToList();
+            _unitOfWork = unitOfWork;
+
+            AccountChanges = _unitOfWork.AccountsChangesRepository.GetAccountsChanges().ToList();
 
             // reverse so that new changes are at the top
             AccountChanges.Reverse();

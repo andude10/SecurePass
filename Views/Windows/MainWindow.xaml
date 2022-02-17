@@ -96,7 +96,7 @@
                         VerticalAlignment="Center"
                         Margin="7" Cursor="Hand" />
 
-                <Button Content="Notes"
+                <Button Content="NotesRepository"
                         Command="{Binding OpenNotesPage}"
                         Style="{StaticResource SectionButton}"
                         HorizontalContentAlignment="Left"
@@ -108,14 +108,14 @@
 
             <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.Resources>
-                    <DataTemplate DataType="{x:Type vm:AccountsVM}">
-                        <view:PasswordsUC />
+                    <DataTemplate DataType="{x:Type vm:AccountsVm}">
+                        <view:PasswordsUc />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type vm:HistoryVM}">
-                        <view:HistoryUC />
+                    <DataTemplate DataType="{x:Type vm:HistoryVm}">
+                        <view:HistoryUc />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type vm:NotesVM}">
-                        <view:NotesUC />
+                    <DataTemplate DataType="{x:Type vm:NotesVm}">
+                        <view:NotesUc />
                     </DataTemplate>
                 </Grid.Resources>
                 <ContentPresenter Content="{Binding CurrentContent, UpdateSourceTrigger=PropertyChanged}" />

@@ -9,7 +9,7 @@ using SecurePass.Services;
 
 namespace SecurePass.ViewModels
 {
-    public class LoginVM : BaseViewModel
+    public class LoginVm : BaseViewModel
     {
         private List<string> _dataBaseNames;
         private string _dbName;
@@ -17,7 +17,7 @@ namespace SecurePass.ViewModels
         private ICommand _login;
         private SecureString _masterPassword;
 
-        public LoginVM()
+        public LoginVm()
         {
             DataBaseNames = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.db")
                 .Select(Path.GetFileNameWithoutExtension)

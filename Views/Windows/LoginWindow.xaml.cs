@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using SecurePass.Repositories.UnitOfWork;
 using SecurePass.Services;
 using SecurePass.ViewModels;
 
@@ -15,8 +16,8 @@ namespace SecurePass.Views.Windows
         {
             InitializeComponent();
             WeakReferenceMessenger.Default.Register<LoginWindow, LoginWindowMessage>(this, Login);
-            ViewModelManager.LoginVM = new LoginVM();
-            DataContext = ViewModelManager.LoginVM;
+            ViewModelManager.LoginVm = new LoginVm();
+            DataContext = ViewModelManager.LoginVm;
         }
 
         private MainWindow Window { get; set; }
@@ -25,7 +26,7 @@ namespace SecurePass.Views.Windows
         {
             if (message.IsSuccessful)
             {
-                ViewModelManager.MainVM = new MainVM();
+                ViewModelManager.MainVm = new MainVm(new UnitOfWork());
                 Window = new MainWindow();
                 Window.Show();
                 Close();
@@ -38,7 +39,7 @@ namespace SecurePass.Views.Windows
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext != null) ((dynamic) DataContext).MasterPassword = ((PasswordBox) sender).SecurePassword;
+            if (DataContext != null) (DataContext as dynamic).MasterPassword = ((PasswordBox) sender).SecurePassword;
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)

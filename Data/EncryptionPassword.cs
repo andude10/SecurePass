@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SecurePass.SQLite
+namespace SecurePass.Data
 {
     /// <summary>
     ///     basic Encrption/decryption functionality
@@ -15,23 +15,23 @@ namespace SecurePass.SQLite
         //types of symmetric encyption
         public enum CryptoTypes
         {
-            encTypeDES = 0,
-            encTypeRC2,
-            encTypeRijndael,
-            encTypeTripleDES
+            EncTypeDes = 0,
+            EncTypeRc2,
+            EncTypeRijndael,
+            EncTypeTripleDes
         }
 
-        private const string CRYPT_DEFAULT_PASSWORD = "CB06cfE507a1";
-        private const CryptoTypes CRYPT_DEFAULT_METHOD = CryptoTypes.encTypeRijndael;
+        private const string CryptDefaultPassword = "CB06cfE507a1";
+        private const CryptoTypes CryptDefaultMethod = CryptoTypes.EncTypeRijndael;
 
-        private byte[] mKey = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24};
-        private byte[] mIV = {65, 110, 68, 26, 69, 178, 200, 219};
+        private byte[] _mKey = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24};
+        private byte[] _mIv = {65, 110, 68, 26, 69, 178, 200, 219};
 
-        private readonly byte[] SaltByteArray =
+        private readonly byte[] _saltByteArray =
             {0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76};
 
-        private CryptoTypes mCryptoType = CRYPT_DEFAULT_METHOD;
-        private string mPassword = CRYPT_DEFAULT_PASSWORD;
+        private CryptoTypes _mCryptoType = CryptDefaultMethod;
+        private string _mPassword = CryptDefaultPassword;
 
         #endregion
 
@@ -39,12 +39,12 @@ namespace SecurePass.SQLite
 
         public EncryptionPassword()
         {
-            calculateNewKeyAndIV();
+            CalculateNewKeyAndIv();
         }
 
-        public EncryptionPassword(CryptoTypes CryptoType)
+        public EncryptionPassword(CryptoTypes cryptoType)
         {
-            this.CryptoType = CryptoType;
+            CryptoType = cryptoType;
         }
 
         #endregion
@@ -56,13 +56,13 @@ namespace SecurePass.SQLite
         /// </summary>
         public CryptoTypes CryptoType
         {
-            get => mCryptoType;
+            get => _mCryptoType;
             set
             {
-                if (mCryptoType != value)
+                if (_mCryptoType != value)
                 {
-                    mCryptoType = value;
-                    calculateNewKeyAndIV();
+                    _mCryptoType = value;
+                    CalculateNewKeyAndIv();
                 }
             }
         }
@@ -73,13 +73,13 @@ namespace SecurePass.SQLite
         /// </summary>
         public string Password
         {
-            get => mPassword;
+            get => _mPassword;
             set
             {
-                if (mPassword != value)
+                if (_mPassword != value)
                 {
-                    mPassword = value;
-                    calculateNewKeyAndIV();
+                    _mPassword = value;
+                    CalculateNewKeyAndIv();
                 }
             }
         }
@@ -96,9 +96,9 @@ namespace SecurePass.SQLite
         public string Encrypt(string inputText)
         {
             //declare a new encoder
-            var UTF8Encoder = new UTF8Encoding();
+            var utf8Encoder = new UTF8Encoding();
             //get byte representation of string
-            var inputBytes = UTF8Encoder.GetBytes(inputText);
+            var inputBytes = utf8Encoder.GetBytes(inputText);
 
             //convert back to a string
             return Convert.ToBase64String(EncryptDecrypt(inputBytes, true));
@@ -125,7 +125,7 @@ namespace SecurePass.SQLite
         /// <returns>an encrypted string</returns>
         public string Encrypt(string inputText, string password, CryptoTypes cryptoType)
         {
-            mCryptoType = cryptoType;
+            _mCryptoType = cryptoType;
             return Encrypt(inputText, password);
         }
 
@@ -153,12 +153,12 @@ namespace SecurePass.SQLite
         public string Decrypt(string inputText)
         {
             //declare a new encoder
-            var UTF8Encoder = new UTF8Encoding();
+            var utf8Encoder = new UTF8Encoding();
             //get byte representation of string
             var inputBytes = Convert.FromBase64String(inputText);
 
             //convert back to a string
-            return UTF8Encoder.GetString(EncryptDecrypt(inputBytes, false));
+            return utf8Encoder.GetString(EncryptDecrypt(inputBytes, false));
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace SecurePass.SQLite
         /// <returns>a decrypted string</returns>
         public string Decrypt(string inputText, string password, CryptoTypes cryptoType)
         {
-            mCryptoType = cryptoType;
+            _mCryptoType = cryptoType;
             return Decrypt(inputText, password);
         }
 
@@ -206,12 +206,12 @@ namespace SecurePass.SQLite
         ///     performs the actual enc/dec.
         /// </summary>
         /// <param name="inputBytes">input byte array</param>
-        /// <param name="Encrpyt">wheather or not to perform enc/dec</param>
+        /// <param name="encrpyt">wheather or not to perform enc/dec</param>
         /// <returns>byte array output</returns>
-        private byte[] EncryptDecrypt(byte[] inputBytes, bool Encrpyt)
+        private byte[] EncryptDecrypt(byte[] inputBytes, bool encrpyt)
         {
             //get the correct transform
-            var transform = getCryptoTransform(Encrpyt);
+            var transform = GetCryptoTransform(encrpyt);
 
             //memory stream for output
             var memStream = new MemoryStream();
@@ -247,56 +247,56 @@ namespace SecurePass.SQLite
         /// </summary>
         /// <param name="encrypt">whether to return a encrpytor or decryptor</param>
         /// <returns>ICryptoTransform</returns>
-        private ICryptoTransform getCryptoTransform(bool encrypt)
+        private ICryptoTransform GetCryptoTransform(bool encrypt)
         {
-            var SA = selectAlgorithm();
-            SA.Key = mKey;
-            SA.IV = mIV;
+            var sa = SelectAlgorithm();
+            sa.Key = _mKey;
+            sa.IV = _mIv;
             if (encrypt)
-                return SA.CreateEncryptor();
-            return SA.CreateDecryptor();
+                return sa.CreateEncryptor();
+            return sa.CreateDecryptor();
         }
 
         /// <summary>
         ///     returns the specific symmetric algorithm acc. to the cryptotype
         /// </summary>
         /// <returns>SymmetricAlgorithm</returns>
-        private SymmetricAlgorithm selectAlgorithm()
+        private SymmetricAlgorithm SelectAlgorithm()
         {
-            SymmetricAlgorithm SA;
-            switch (mCryptoType)
+            SymmetricAlgorithm sa;
+            switch (_mCryptoType)
             {
-                case CryptoTypes.encTypeDES:
-                    SA = DES.Create();
+                case CryptoTypes.EncTypeDes:
+                    sa = DES.Create();
                     break;
-                case CryptoTypes.encTypeRC2:
-                    SA = RC2.Create();
+                case CryptoTypes.EncTypeRc2:
+                    sa = RC2.Create();
                     break;
-                case CryptoTypes.encTypeRijndael:
-                    SA = Rijndael.Create();
+                case CryptoTypes.EncTypeRijndael:
+                    sa = Rijndael.Create();
                     break;
-                case CryptoTypes.encTypeTripleDES:
-                    SA = TripleDES.Create();
+                case CryptoTypes.EncTypeTripleDes:
+                    sa = TripleDES.Create();
                     break;
                 default:
-                    SA = TripleDES.Create();
+                    sa = TripleDES.Create();
                     break;
             }
 
-            return SA;
+            return sa;
         }
 
         /// <summary>
         ///     calculates the key and IV acc. to the symmetric method from the password
         ///     key and IV size dependant on symmetric method
         /// </summary>
-        private void calculateNewKeyAndIV()
+        private void CalculateNewKeyAndIv()
         {
             //use salt so that key cannot be found with dictionary attack
-            var pdb = new PasswordDeriveBytes(mPassword, SaltByteArray);
-            var algo = selectAlgorithm();
-            mKey = pdb.GetBytes(algo.KeySize / 8);
-            mIV = pdb.GetBytes(algo.BlockSize / 8);
+            var pdb = new PasswordDeriveBytes(_mPassword, _saltByteArray);
+            var algo = SelectAlgorithm();
+            _mKey = pdb.GetBytes(algo.KeySize / 8);
+            _mIv = pdb.GetBytes(algo.BlockSize / 8);
         }
 
         #endregion

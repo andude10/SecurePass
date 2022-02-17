@@ -7,25 +7,25 @@ using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SecurePass.Models;
-using SecurePass.Repositories.Implementations;
-using SecurePass.Repositories.Interfaces;
+using SecurePass.Repositories.UnitOfWork;
 using SecurePass.Services;
 
 namespace SecurePass.ViewModels
 {
-    public class AccountsVM : BaseViewModel
+    public class AccountsVm : BaseViewModel
     {
-        private readonly IAccountsRepository _accountsRepository;
+        private readonly IUnitOfWork _unitOfWork;
+
         private List<Account> _accounts;
         private ObservableCollection<Account> _actualAccounts;
         private ObservableCollection<string> _categories;
 
         private string _selectedCategory;
 
-        public AccountsVM()
+        public AccountsVm(IUnitOfWork unitOfWork)
         {
-            _accountsRepository = new AccountsRepository(new AccountsChangesRepository());
-            Accounts = _accountsRepository.GetAccounts().ToList();
+            _unitOfWork = unitOfWork;
+            Accounts = unitOfWork.AccountsRepository.GetAccounts().ToList();
             Categories = new ObservableCollection<string>();
             ActualAccounts = new ObservableCollection<Account>(Accounts);
             UpdateView();
@@ -68,6 +68,7 @@ namespace SecurePass.ViewModels
             }));
         }
 
+        //TODO: Remove this crutch
         private void UpdateView()
         {
             var categories = Accounts.Select(a => a.Category).ToList();
@@ -93,7 +94,8 @@ namespace SecurePass.ViewModels
 
             newAccount.Category ??= "No category";
 
-            _accountsRepository.AddAccount(newAccount);
+            _unitOfWork.AccountsRepository.AddAccount(newAccount);
+            _unitOfWork.Save();
             Accounts.Add(newAccount);
 
             UpdateView();
@@ -119,7 +121,8 @@ namespace SecurePass.ViewModels
                 }
 
                 account.Category ??= "No category";
-                _accountsRepository.SetAccount(account, oldPass);
+                _unitOfWork.AccountsRepository.SetAccount(account, oldPass);
+                _unitOfWork.Save();
             }
 
             UpdateView();
@@ -133,7 +136,8 @@ namespace SecurePass.ViewModels
             var account = Accounts.Find(a => a.AccountId == id);
 
             Accounts.Remove(account);
-            _accountsRepository.RemoveAccount(account);
+            _unitOfWork.AccountsRepository.RemoveAccount(account);
+            _unitOfWork.Save();
 
             UpdateView();
         });

@@ -6,7 +6,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SecurePass.Models;
 
-namespace SecurePass.SQLite
+namespace SecurePass.Data
 {
     public class DatabaseContext : DbContext
     {

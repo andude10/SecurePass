@@ -1,54 +1,57 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using SecurePass.Data;
 using SecurePass.Models;
 using SecurePass.Repositories.Interfaces;
-using SecurePass.SQLite;
 
 namespace SecurePass.Repositories.Implementations
 {
     public sealed class AccountsRepository : IAccountsRepository
     {
-        private readonly IAccountsChangesRepository _changesRepository;
+        private readonly DatabaseContext _context;
 
-        public AccountsRepository(IAccountsChangesRepository changesRepository)
+        public AccountsRepository(DatabaseContext context)
         {
-            _changesRepository = changesRepository;
+            _context = context;
         }
 
         public IEnumerable<Account> GetAccounts()
         {
-            using var context = new DatabaseContext();
-            return context.Accounts.ToList();
+            return _context.Accounts.ToList();
         }
 
         public Account GetAccount(int id)
         {
-            using var context = new DatabaseContext();
-            return context.Accounts.Find(id);
+            return _context.Accounts.Find(id);
         }
 
         public void SetAccount(Account newAccount, string oldPass)
         {
             if (oldPass != newAccount.Password)
-                _changesRepository.AddAccountChanges(newAccount.Username, newAccount.Url, oldPass, newAccount.Password);
+            {
+                var message = $"Account password with username '{newAccount.Username}' on '{newAccount.Url}'" +
+                              $" website changed from '{oldPass}' to '{newAccount.Password}'";
 
-            using var context = new DatabaseContext();
-            context.Accounts.Update(newAccount);
-            context.SaveChanges();
+                _context.AccountsChanges.Add(new AccountChange
+                {
+                    Change = message,
+                    Date = DateTime.Now.ToString(CultureInfo.InvariantCulture)
+                });
+            }
+
+            _context.Accounts.Update(newAccount);
         }
 
         public void RemoveAccount(Account account)
         {
-            using var context = new DatabaseContext();
-            context.Accounts.Remove(account);
-            context.SaveChanges();
+            _context.Accounts.Remove(account);
         }
 
         public void AddAccount(Account account)
         {
-            using var context = new DatabaseContext();
-            context.Accounts.Add(account);
-            context.SaveChanges();
+            _context.Accounts.Add(account);
         }
     }
 }

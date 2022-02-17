@@ -1,44 +1,43 @@
 using System.Collections.Generic;
 using System.Linq;
+using SecurePass.Data;
 using SecurePass.Models;
 using SecurePass.Repositories.Interfaces;
-using SecurePass.SQLite;
 
 namespace SecurePass.Repositories.Implementations
 {
     public sealed class NotesRepository : INotesRepository
     {
+        private readonly DatabaseContext _context;
+
+        public NotesRepository(DatabaseContext context)
+        {
+            _context = context;
+        }
+
         public IEnumerable<Note> GetNotes()
         {
-            using var context = new DatabaseContext();
-            return context.Notes.ToList();
+            return _context.Notes.ToList();
         }
 
         public Note GetNote(int id)
         {
-            using var context = new DatabaseContext();
-            return context.Notes.Find(id);
+            return _context.Notes.Find(id);
         }
 
         public void SetNote(Note note)
         {
-            using var context = new DatabaseContext();
-            context.Notes.Update(note);
-            context.SaveChanges();
+            _context.Notes.Update(note);
         }
 
         public void RemoveNote(Note note)
         {
-            using var context = new DatabaseContext();
-            context.Notes.Remove(note);
-            context.SaveChanges();
+            _context.Notes.Remove(note);
         }
 
         public void AddNote(Note note)
         {
-            using var context = new DatabaseContext();
-            context.Notes.Add(note);
-            context.SaveChanges();
+            _context.Notes.Add(note);
         }
     }
 }

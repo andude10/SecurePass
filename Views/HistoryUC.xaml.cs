@@ -5,12 +5,12 @@ namespace SecurePass.Views
     /// <summary>
     ///     Interaction logic for HistoryPage.xaml
     /// </summary>
-    public partial class HistoryUC
+    public partial class HistoryUc
     {
-        public HistoryUC()
+        public HistoryUc()
         {
             InitializeComponent();
-            DataContext = ViewModelManager.HistoryVM;
+            DataContext = ViewModelManager.HistoryVm;
         }
     }
 }

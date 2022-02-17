@@ -7,24 +7,24 @@ namespace SecurePass.Views
     /// <summary>
     ///     Interaction logic for PasswordsPage.xaml
     /// </summary>
-    public partial class PasswordsUC
+    public partial class PasswordsUc
     {
-        public PasswordsUC()
+        public PasswordsUc()
         {
             InitializeComponent();
 
-            WeakReferenceMessenger.Default.Register<PasswordsUC, NewAccountWindowMessage>(this, NewAccount);
-            WeakReferenceMessenger.Default.Register<PasswordsUC, EditAccountWindowMessage>(this, EditAccount);
-            DataContext = ViewModelManager.AccountsVM;
+            WeakReferenceMessenger.Default.Register<PasswordsUc, NewAccountWindowMessage>(this, NewAccount);
+            WeakReferenceMessenger.Default.Register<PasswordsUc, EditAccountWindowMessage>(this, EditAccount);
+            DataContext = ViewModelManager.AccountsVm;
         }
 
-        private static void NewAccount(PasswordsUC recipient, NewAccountWindowMessage message)
+        private static void NewAccount(PasswordsUc recipient, NewAccountWindowMessage message)
         {
             var newAccountDialog = new NewAccountDialog();
             if (newAccountDialog.ShowDialog() == true) message.Reply(newAccountDialog.NewAccount);
         }
 
-        private static void EditAccount(PasswordsUC recipient, EditAccountWindowMessage message)
+        private static void EditAccount(PasswordsUc recipient, EditAccountWindowMessage message)
         {
             var editAccountDialog = new EditAccountDialog(message.Account);
             if (editAccountDialog.ShowDialog() == true) message.Reply(editAccountDialog.EditAccount);

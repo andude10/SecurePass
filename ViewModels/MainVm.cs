@@ -1,23 +1,26 @@
 ﻿using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
+using SecurePass.Repositories.UnitOfWork;
 using SecurePass.Services;
 
 namespace SecurePass.ViewModels
 {
-    public class MainVM : BaseViewModel
+    public class MainVm : BaseViewModel
     {
         public delegate void SearchingHandler(string enteredText);
 
+        private readonly IUnitOfWork _unitOfWork;
         private BaseViewModel _currentContent;
 
-        public MainVM()
+        public MainVm(IUnitOfWork unitOfWork)
         {
-            ViewModelManager.AccountsVM = new AccountsVM();
-            ViewModelManager.NotesVM = new NotesVM();
-            OnSearching += ViewModelManager.AccountsVM.SearchingData;
-            OnSearching += ViewModelManager.NotesVM.SearchingData;
+            _unitOfWork = unitOfWork;
+            ViewModelManager.AccountsVm = new AccountsVm(unitOfWork);
+            ViewModelManager.NotesVm = new NotesVm(unitOfWork);
+            OnSearching += ViewModelManager.AccountsVm.SearchingData;
+            OnSearching += ViewModelManager.NotesVm.SearchingData;
 
-            CurrentContent = ViewModelManager.AccountsVM;
+            CurrentContent = ViewModelManager.AccountsVm;
         }
 
         public BaseViewModel CurrentContent
@@ -34,24 +37,24 @@ namespace SecurePass.ViewModels
 
         public ICommand OpenPasswordsPage => _openPasswordsPage ??= new RelayCommand(() =>
         {
-            CurrentContent = ViewModelManager.AccountsVM;
+            CurrentContent = ViewModelManager.AccountsVm;
         });
 
         private ICommand _openHistoryPage;
 
         public ICommand OpenHistoryPage => _openHistoryPage ??= new RelayCommand(() =>
         {
-            //a new instance of HistroyVM is created each time to update the changes
-            ViewModelManager.HistoryVM = new HistoryVM();
-            OnSearching += ViewModelManager.HistoryVM.SearchingData;
-            CurrentContent = ViewModelManager.HistoryVM;
+            //a new instance of HistoryVm is created each time to update the changes
+            ViewModelManager.HistoryVm = new HistoryVm(_unitOfWork);
+            OnSearching += ViewModelManager.HistoryVm.SearchingData;
+            CurrentContent = ViewModelManager.HistoryVm;
         });
 
         private ICommand _openNotesPage;
 
         public ICommand OpenNotesPage => _openNotesPage ??= new RelayCommand(() =>
         {
-            CurrentContent = ViewModelManager.NotesVM;
+            CurrentContent = ViewModelManager.NotesVm;
         });
 
         private ICommand _searching;

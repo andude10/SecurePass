@@ -7,23 +7,23 @@ namespace SecurePass.Views
     /// <summary>
     ///     Interaction logic for NotesPage.xaml
     /// </summary>
-    public partial class NotesUC
+    public partial class NotesUc
     {
-        public NotesUC()
+        public NotesUc()
         {
             InitializeComponent();
-            WeakReferenceMessenger.Default.Register<NotesUC, NewNoteWindowMessage>(this, NewNote);
-            WeakReferenceMessenger.Default.Register<NotesUC, EditNoteWindowMessage>(this, EditNote);
-            DataContext = ViewModelManager.NotesVM;
+            WeakReferenceMessenger.Default.Register<NotesUc, NewNoteWindowMessage>(this, NewNote);
+            WeakReferenceMessenger.Default.Register<NotesUc, EditNoteWindowMessage>(this, EditNote);
+            DataContext = ViewModelManager.NotesVm;
         }
 
-        private static void NewNote(NotesUC recipient, NewNoteWindowMessage message)
+        private static void NewNote(NotesUc recipient, NewNoteWindowMessage message)
         {
             var newNoteWindow = new NewNoteWindow();
             if (newNoteWindow.ShowDialog() == true) message.Reply(newNoteWindow.NewNote);
         }
 
-        private static void EditNote(NotesUC recipient, EditNoteWindowMessage message)
+        private static void EditNote(NotesUc recipient, EditNoteWindowMessage message)
         {
             var editNoteWindow = new EditNoteWindow(message.Note);
             if (editNoteWindow.ShowDialog() == true) message.Reply(editNoteWindow.EditNote);

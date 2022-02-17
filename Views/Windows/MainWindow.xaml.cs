@@ -11,7 +11,7 @@ namespace SecurePass.Views.Windows
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = ViewModelManager.MainVM;
+            DataContext = ViewModelManager.MainVm;
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)

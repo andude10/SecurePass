@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security;
-using SecurePass.SQLite;
+using SecurePass.Data;
 
 namespace SecurePass.Services
 {
