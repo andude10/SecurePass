@@ -1,6 +1,5 @@
 # SecurePass
 
-(P.S. The code is relatively old, I'm ashamed of many things, someday I'll redo it)
 Password manager application, on login, if the master-password is correct, the SQLite database is decrypted. On exit,
 the database is encrypted back.
 
