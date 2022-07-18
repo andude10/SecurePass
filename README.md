@@ -1,6 +1,6 @@
 # SecurePass
 
-Password manager application. On login, if the master-password is correct, the SQLite database is decrypted. On exit,
+Password manager. On login, if the master-password is correct, the SQLite database is decrypted. On exit,
 the database is encrypted back.
 
 ## The application has the following features:
@@ -8,7 +8,7 @@ the database is encrypted back.
 - Application saves all password changes
 - Customizable password generator
 - Protected notes
-- Creating the SQLCipher base, knowing the master-password, you can decrypt the base through other programs
+- The password database can be decrypted knowing the master-password through other programs.
 
 ## A bit about the implementation:
 
