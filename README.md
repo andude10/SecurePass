@@ -1,15 +1,14 @@
-# SecurePass
-
 Password manager. On login, if the master-password is correct, the SQLite database is decrypted. On exit,
 the database is encrypted back.
 
-## The application has the following features:
+## Features:
 
-- Application saves all password changes
+- Password history
 - Customizable password generator
-- Protected notes
-- The password database can be decrypted knowing the master-password through other programs.
+- Passwords tags
+- Encrypted password notes
+- The general format of the SQLite database, the database can be decrypted in other ways by knowing the master password
 
-## A bit about the implementation:
+## Implementation
 
-Application used the repository pattern. There was a problem with database encryption because standard SQLite doesn't support encryption, so I used SQLCipher which can be encrypted.
+This is a freelance project and the order required the use of SQLite. But the normal version of the database does not support encryption, for this reason I decided to use SQLCipher.
